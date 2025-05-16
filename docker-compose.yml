@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  voracious-appetite:
+    restart: always
+    image: ehage/voracious-appetite-app:${VERSION_TAG}
+    container_name: voracious-appetite-app
+    ports:
+      - '33123:80'
