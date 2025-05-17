@@ -5,12 +5,12 @@ import vuetify from './plugins/vuetify'
 import { pinia } from "@/plugins/pinia";
 import { loadFonts } from './plugins/webfontloader'
 
-// import router from "@/router";
+import router from "@/router";
 
 const app = createApp(App);
 
 loadFonts();
-// app.use(router);
+app.use(router);
 app.use(vuetify);
 app.use(pinia);
 
