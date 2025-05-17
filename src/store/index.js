@@ -15,15 +15,29 @@ export const useCommonStore = defineStore('common', {
             }, 3000);
         },
         async loadRecipes() {
+            this.status = 'loading';
             try {
                 this.recipes = await recipesApi.getRecipes();
+                this.status = 'idle';
             } catch (err) {
                 this.setAlertMessage(err, 'error', 'unable to load recipes');
+                this.status = 'error';
+            }
+        },
+        async loadSelectedRecipe(recipeId) {
+            this.status = 'loading';
+            try {
+                this.selectedRecipe = await recipesApi.getRecipeById(recipeId);
+                this.status = 'idle';
+            } catch (err) {
+                this.setAlertMessage(err, 'error', 'unable to load recipes');
+                this.status = 'error';
             }
         },
     },
     state: () => {
         return {
+            status: 'idle',
             recipes: [],
             selectedRecipe: null,
             alertVisible: false,
