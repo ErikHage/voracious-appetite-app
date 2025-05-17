@@ -1,12 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import PublicPage from "@/components/views/PublicPage.vue";
+import Dashboard from "@/components/views/Dashboard.vue";
+import RecipesPage from "@/components/views/RecipesPage.vue";
+import RecipeDetailsPage from "@/components/views/RecipeDetailsPage.vue";
 
 const routes = [
     {
         path: '/',
-        name: 'public',
-        component: PublicPage,
+        name: 'dashboard',
+        component: Dashboard,
+        meta: {},
+    },
+    {
+        path: '/recipes',
+        name: 'recipes-list',
+        component: RecipesPage,
+        meta: {},
+    },
+    {
+        path: '/recipes/:recipeId',
+        name: 'recipe-details',
+        component: RecipeDetailsPage,
         meta: {},
     },
 ];

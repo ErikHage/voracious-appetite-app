@@ -19,7 +19,7 @@
 import { getAssetPath } from "@/utils/assets";
 
 export default {
-  name: 'PublicPage',
+  name: 'Dashboard',
 
   data: () => ({}),
 
