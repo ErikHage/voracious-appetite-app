@@ -24,7 +24,10 @@
             />
           </v-card-title>
           <v-card-text>
-            <v-table density="compact" class="elevation-1">
+            <v-table
+                density="compact"
+                class="elevation-1 mb-4"
+                height="65vh">
               <tbody>
               <tr v-for="recipe in filteredRecipes" :key="recipe.recipeId">
                 <td>
@@ -39,6 +42,7 @@
               </tr>
               </tbody>
             </v-table>
+            <span>Showing {{ filteredRecipes.length }} of {{ recipes.length }} recipes</span>
           </v-card-text>
         </v-card>
       </v-col>
