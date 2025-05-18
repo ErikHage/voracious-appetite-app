@@ -15,17 +15,20 @@
           <v-card>
             <v-card-text>
               <v-row>
-                <v-col cols="3">
+                <v-col cols="4">
                   <TimeAndYield
-                      class="ma-2"
+                      class="ma-1"
                       :prep="selectedRecipe.prep"
                       :cook="selectedRecipe.cook"
                       :yield="selectedRecipe.yield"
                   />
+                  <Nutrition
+                      class="ma-1"
+                    :nutrition="selectedRecipe.nutrition"/>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="8">
                   <IngredientsList
-                      class="ma-2"
+                      class="ma-1"
                       :ingredients="selectedRecipe.ingredients"/>
                 </v-col>
               </v-row>
@@ -51,11 +54,13 @@ import {mapActions, mapState} from "pinia";
 import {useCommonStore} from "@/store";
 import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
 import IngredientsList from "@/components/recipes/IngredientsList.vue";
+import Nutrition from "@/components/recipes/Nutrition.vue";
 
 export default {
   name: 'RecipeDetailsPage',
 
   components: {
+    Nutrition,
     IngredientsList,
     TimeAndYield,
     FadeOutAlert,
