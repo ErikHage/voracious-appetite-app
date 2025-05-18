@@ -14,17 +14,21 @@
         <v-col>
           <v-card>
             <v-card-text>
-              <div class="d-flex">
-                <TimeAndYield
-                    class="ma-2"
-                    :prep="selectedRecipe.prep"
-                    :cook="selectedRecipe.cook"
-                    :yield="selectedRecipe.yield"
-                />
-              </div>
-              <IngredientsList
-                  class="ma-2"
-                  :ingredients="selectedRecipe.ingredients"/>
+              <v-row>
+                <v-col cols="3">
+                  <TimeAndYield
+                      class="ma-2"
+                      :prep="selectedRecipe.prep"
+                      :cook="selectedRecipe.cook"
+                      :yield="selectedRecipe.yield"
+                  />
+                </v-col>
+                <v-col cols="9">
+                  <IngredientsList
+                      class="ma-2"
+                      :ingredients="selectedRecipe.ingredients"/>
+                </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-col>
