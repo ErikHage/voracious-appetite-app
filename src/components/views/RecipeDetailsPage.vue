@@ -5,8 +5,24 @@
         <v-col>
           <div class="text-center">
             <h1>{{ selectedRecipe.recipeName }}</h1>
+            <h3 v-if="!!keywords">{{ keywords }}</h3>
             <fade-out-alert :is-visible="alert.isVisible" :alert-type="alert.type" :message="alert.message"/>
           </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card>
+            <v-card-text>
+              <div class="d-flex">
+                <TimeAndYield
+                    :prep="selectedRecipe.prep"
+                    :cook="selectedRecipe.cook"
+                    :yield="selectedRecipe.yield"
+                />
+              </div>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </div>
@@ -25,11 +41,13 @@
 import FadeOutAlert from "@/components/utils/FadeOutAlert.vue";
 import {mapActions, mapState} from "pinia";
 import {useCommonStore} from "@/store";
+import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
 
 export default {
   name: 'RecipeDetailsPage',
 
   components: {
+    TimeAndYield,
     FadeOutAlert,
   },
 
@@ -40,6 +58,13 @@ export default {
       alertMessage: 'alertMessage',
       alertVisible: 'alertVisible',
     }),
+
+    keywords() {
+      if (this.selectedRecipe.keywords?.length > 0) {
+        return this.selectedRecipe.keywords.join(", ");
+      }
+      return '';
+    },
 
     alert() {
       return {

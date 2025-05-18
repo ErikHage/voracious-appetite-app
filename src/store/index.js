@@ -38,8 +38,8 @@ export const useCommonStore = defineStore('common', {
     state: () => {
         return {
             status: 'idle',
-            recipes: [],
-            selectedRecipe: null,
+            recipes: [], // this is a summary object
+            selectedRecipe: null, // thi is the full object
             alertVisible: false,
             alertType: 'success',
             alertMessage: null,
