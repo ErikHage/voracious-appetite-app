@@ -1,8 +1,8 @@
 <template>
-  <v-card>
+  <v-card class="elevation-4">
     <v-card-title class="d-flex justify-start">Time and Yield</v-card-title>
     <v-card-text>
-      <v-table>
+      <v-table density="compact">
         <tbody>
         <tr v-if="prep">
           <th>Prep Time</th>

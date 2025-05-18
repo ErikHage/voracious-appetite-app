@@ -16,11 +16,15 @@
             <v-card-text>
               <div class="d-flex">
                 <TimeAndYield
+                    class="ma-2"
                     :prep="selectedRecipe.prep"
                     :cook="selectedRecipe.cook"
                     :yield="selectedRecipe.yield"
                 />
               </div>
+              <IngredientsList
+                  class="ma-2"
+                  :ingredients="selectedRecipe.ingredients"/>
             </v-card-text>
           </v-card>
         </v-col>
@@ -42,11 +46,13 @@ import FadeOutAlert from "@/components/utils/FadeOutAlert.vue";
 import {mapActions, mapState} from "pinia";
 import {useCommonStore} from "@/store";
 import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
+import IngredientsList from "@/components/recipes/IngredientsList.vue";
 
 export default {
   name: 'RecipeDetailsPage',
 
   components: {
+    IngredientsList,
     TimeAndYield,
     FadeOutAlert,
   },
