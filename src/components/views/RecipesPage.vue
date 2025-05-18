@@ -85,10 +85,15 @@ export default {
     },
 
     filteredRecipes() {
-      if (!this.recipeFilter) {
-        return this.recipes;
+      let filtered = [...this.recipes];
+
+      if (this.recipeFilter) {
+        return this.recipes.filter(recipe => recipe.filterMatchString.includes(this.recipeFilter));
       }
-      return this.recipes.filter(recipe => recipe.filterMatchString.includes(this.recipeFilter));
+
+      return filtered.sort((a, b) =>
+          a.recipeName.localeCompare(b.recipeName)
+      );
     },
   },
 
