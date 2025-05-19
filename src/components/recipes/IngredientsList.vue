@@ -1,7 +1,7 @@
 <template>
-  <v-card class="elevation-4">
+  <v-card class="elevation-4 fill-height d-flex flex-column">
     <v-card-title class="d-flex justify-start">Ingredients</v-card-title>
-    <v-card-text>
+    <v-card-text class="flex-grow-1 overflow-auto">
       <ul class="ml-6">
         <li v-for="(ingredient, index) in ingredients" :key="ingredient.name + index">
           <span class="ingredient-quantity-value pr-2">
