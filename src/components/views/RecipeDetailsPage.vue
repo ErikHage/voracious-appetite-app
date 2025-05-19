@@ -15,7 +15,7 @@
           <v-card>
             <v-card-text class="pa-1 fill-height">
               <v-row>
-                <v-col cols="4" class="h-100 d-flex flex-column">
+                <v-col cols="12" md="4" class="h-100 d-flex flex-column">
                   <TimeAndYield
                       class="ma-1"
                       :prep="selectedRecipe.prep"
@@ -26,7 +26,7 @@
                       class="ma-1 mt-auto"
                     :nutrition="selectedRecipe.nutrition"/>
                 </v-col>
-                <v-col cols="8" class="d-flex flex-column">
+                <v-col cols="12" md="8" class="d-flex flex-column">
                   <IngredientsList
                       class="ma-1 fill-height"
                       :ingredients="selectedRecipe.ingredients"/>
