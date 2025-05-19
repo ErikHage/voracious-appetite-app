@@ -31,6 +31,10 @@
                       class="ma-1 fill-height"
                       :ingredients="selectedRecipe.ingredients"/>
                 </v-col>
+                <v-col cols="12">
+                  <PreparationStepsList
+                    :steps="selectedRecipe.steps"/>
+                </v-col>
               </v-row>
             </v-card-text>
           </v-card>
@@ -55,11 +59,13 @@ import {useCommonStore} from "@/store";
 import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
 import IngredientsList from "@/components/recipes/IngredientsList.vue";
 import Nutrition from "@/components/recipes/Nutrition.vue";
+import PreparationStepsList from "@/components/recipes/PreparationStepsList.vue";
 
 export default {
   name: 'RecipeDetailsPage',
 
   components: {
+    PreparationStepsList,
     Nutrition,
     IngredientsList,
     TimeAndYield,
