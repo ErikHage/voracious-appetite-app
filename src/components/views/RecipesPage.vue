@@ -88,7 +88,8 @@ export default {
       let filtered = [...this.recipes];
 
       if (this.recipeFilter) {
-        return this.recipes.filter(recipe => recipe.filterMatchString.includes(this.recipeFilter));
+        return this.recipes.filter(
+            recipe => recipe.filterMatchString.toLowerCase().includes(this.recipeFilter.toLowerCase()));
       }
 
       return filtered.sort((a, b) =>
