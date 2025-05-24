@@ -1,11 +1,18 @@
 <template>
   <v-app-bar app>
-    <v-toolbar-title>Voracious Appetite</v-toolbar-title>
+    <template v-if="$vuetify.display.smAndDown">
+      <v-btn :to="dashboardPath" icon>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+    </template>
+
+    <template v-else>
+      <v-toolbar-title>Voracious Appetite</v-toolbar-title>
+    </template>
 
     <v-spacer></v-spacer>
 
-    <v-btn :to="dashboardPath">Dashboard</v-btn>
-    <v-btn :to="recipesPath">Recipes</v-btn>
+    <v-btn class="mr-2" :to="recipesPath">Recipes</v-btn>
   </v-app-bar>
 </template>
 
