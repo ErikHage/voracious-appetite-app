@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "scripts": {
-    "dev": "vite --port 5174",
+    "dev": "vite --port 5175",
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint --ext .js,.vue src"
