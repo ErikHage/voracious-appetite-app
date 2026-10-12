@@ -31,6 +31,10 @@ helpers/ui/drivers/assertions.js  the only importer of expect
 
 `helpers/ui/world.js` holds what a spec has named (shared by every page object in a test) and the drivers. `helpers/ui/params.js` holds shared parameter declarations. Steps are parsed with [`@feral-auth/ts-simple-dsl`](https://github.com/ErikHage/ts-simple-dsl).
 
+**Names, not data.** The data is live, so a spec can't name a real recipe. Instead it chooses one from the list and gives it an alias: `recipesPage.chooseRecipe('recipe: chosen')`. Later steps refer to `recipe: chosen`, and the world resolves the alias to what the driver found.
+
+**Known-wrong behaviour is pinned, not skipped.** A `// DocumentsCurrentBehavior:` comment above the test says what happens today and what should happen. The test title and the step name the intent (`checkFindsRecipeByFullName`). The driver method names today's behaviour (`fullNameSearchFindsNothing`), so it's the one thing a fix renames.
+
 ## Rules
 
 1. **Specs are prose.** A spec's only import is `ui-test`. Its steps take `"name: value"` strings and nothing else.
@@ -41,14 +45,14 @@ helpers/ui/drivers/assertions.js  the only importer of expect
 
 ## Adding a test
 
-1. Write the spec first, in the steps you wish existed: `await recipesPage.searchFor('text: soup')`.
+1. Write the spec first, in the steps you wish existed: `await recipesPage.search.searchFor('text: soup')`.
 2. Add the step to the page or component object. Declare its parameters with `parseDslArgs` (use `parseDslArgs(args, {})` for none), then delegate to the driver.
 3. Add the driver method, with its locators and assertions. A new kind of check becomes a primitive in `assertions.js`.
-4. For a new page, add a driver in `drivers/drivers.js` and a fixture in `ui-test.js`.
+4. For a new page, add a driver in `drivers/drivers.js` and a fixture in `ui-test.js`. For a new component, add a driver too, and expose the component as a property of each page that contains it.
 5. Run it. A misspelled parameter fails only at runtime.
 6. Check the layering:
    ```bash
    grep -rnE "\bexpect\(|import \{[^}]*\bexpect\b" spec/ui spec/helpers/ui   # assertions.js only
-   grep -rn "getBy\|locator(" spec/ui spec/helpers/ui/pages                   # nothing
+   grep -rn "getBy\|locator(" spec/ui/*/ spec/helpers/ui/pages spec/helpers/ui/components  # nothing
    grep -rn "^import" spec/ui                                                 # ui-test only
    ```

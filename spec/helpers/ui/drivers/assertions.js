@@ -22,8 +22,24 @@ export async function expectNotEmpty(locator, what) {
     await expect(locator.first(), failureMessage(what, `at least one ${locator}`)).toBeVisible();
 }
 
+/** `text` is a string to match exactly, or a RegExp. */
 export async function expectText(locator, text, what) {
-    await expect(locator, failureMessage(what, `${locator} to read "${text}"`)).toHaveText(text);
+    await expect(locator, failureMessage(what, `${locator} to read ${text instanceof RegExp ? text : `"${text}"`}`))
+        .toHaveText(text);
+}
+
+/** Retries until the locator reads anything but `text`. */
+export async function expectNotText(locator, text, what) {
+    await expect(locator, failureMessage(what, `${locator} to stop reading "${text}"`)).not.toHaveText(text);
+}
+
+/** For form fields: what has been typed into one. */
+export async function expectValue(locator, value, what) {
+    await expect(locator, failureMessage(what, `${locator} to hold "${value}"`)).toHaveValue(value);
+}
+
+export async function expectCount(locator, count, what) {
+    await expect(locator, failureMessage(what, `${locator} to match ${count} element(s)`)).toHaveCount(count);
 }
 
 /** Reports the first pair out of order rather than diffing the whole list. */
