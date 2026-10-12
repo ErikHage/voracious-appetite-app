@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app>
     <template v-if="$vuetify.display.smAndDown">
-      <v-btn :to="dashboardPath" icon>
+      <v-btn :to="dashboardPath" icon aria-label="Home">
         <v-icon>mdi-home</v-icon>
       </v-btn>
     </template>
