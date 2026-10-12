@@ -58,3 +58,26 @@ The `dsl-tests` skill's UI section gets updated after batch 1, once components a
 - **One worker.** Repeated runs (`--repeat-each`) timed out on `page.goto` with 3 or more workers: the Vite dev server serves each page as hundreds of unbundled modules, and this machine is old. Over 18 runs, 1 worker and 2 workers both passed every time, in 22s and 28s, while 3 workers failed 6 and 4 workers failed 11. `playwright.config.js` sets `workers: 1`; override it with `--workers` on a faster machine. After the change, 30 runs (`--repeat-each=5`) all passed.
 - **Vite ignores Playwright's output.** `vite.config.js` now has `server.watch.ignored` for `test-results/` and `playwright-report/`. While investigating, I saw Vite send `page reload` to connected browsers when Playwright wrote its report HTML. It wasn't the cause of the timeouts (they continued without it), but it can reload a page under test.
 - Searching uppercase depends on the app lowercasing input. Searching the word as it's listed (capitalized) depends on that too, so a case bug would fail both search tests, not just "ignores case".
+
+## 2026-10-12
+
+**Batch 2 (navigation), done.** 13 UI tests in all.
+- **New page objects:** `dashboardPage` and `recipeDetailsPage`. The details page has no `open`: a spec knows a recipe only by its listed name, so it gets there with `recipesPage.openRecipe('recipe: chosen')`.
+- **`appBar` component:** a property of every page object. All of them share one driver per test. Its steps only click; the destination page's `checkIsShown`/`checkShows` checks where the click led, by URL and heading.
+- **Screen size:** `open` takes an optional `screen: desktop | phone` (a shared declaration in `params.js`). `drivers/screens.js` holds the viewport sizes either side of Vuetify's 960px `smAndDown` breakpoint, and builds app URLs from the config.
+- **Tests added:**
+  - the dashboard's Recipes button;
+  - the app bar's Recipes link from a recipe page;
+  - the phone home icon;
+  - a recipe opened from the list;
+  - the back link;
+  - a reload of a recipe page;
+  - the search kept after going to a recipe and back.
+- **`actionTimeout: 10_000`** in the config. Without it, a click on a missing element waited out the 30s test timeout and said only that. Now it fails in 10s and names the locator.
+- **The home icon now has `aria-label="Home"`** (in `AppBar.vue`, committed separately as an accessibility fix). Before, it had no accessible name, so the driver had to find it by its `href`. That caused two problems while breaking the app. A wrong target made the driver unable to find the icon at all, so the test failed on the locator, not on where the icon led. And with the Recipes link also pointed home, the locator matched two links. Now the driver finds it by role and name. After the change, the same two breaks each fail only their own test, with `expected: the browser to be at …`.
+- **Status:** 13 UI tests and 76 unit tests pass, and the layering greps are clean. Five temporary breaks to the app each failed the expected tests, and I reverted each one:
+  - search not restored from `sessionStorage`: the kept-search test;
+  - back link to the dashboard: the back-link test and the kept-search test, which also uses the back link;
+  - app bar Recipes link to the dashboard: its test, plus the phone test, because of the locator ambiguity above (only its own test after the label);
+  - home icon to the list: the phone test;
+  - dashboard button to the dashboard: its test.

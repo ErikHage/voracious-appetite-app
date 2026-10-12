@@ -14,6 +14,10 @@ export function createRecipeSearchDriver(page) {
             await expectValue(searchBox, text, `searching for "${text}"`);
         },
 
+        async holds(text) {
+            await expectValue(searchBox, text, `keeping the search for "${text}"`);
+        },
+
         async clear() {
             await clearButton.click();
             await expectValue(searchBox, '', 'clearing the search');

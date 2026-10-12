@@ -1,6 +1,7 @@
 import { optional, parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
-import { alias } from '../params';
+import { alias, screen } from '../params';
+import { createAppBar } from '../components/app-bar';
 import { createRecipeSearch } from '../components/recipe-search';
 
 /**
@@ -13,14 +14,33 @@ import { createRecipeSearch } from '../components/recipe-search';
  */
 export function createRecipesPage(world, driver) {
     return {
+        appBar: createAppBar(world, world.drivers.appBar),
+
         /** The search box above the list. */
         search: createRecipeSearch(world, world.drivers.recipeSearch),
 
-        /** Opens the page and waits for it to show. No parameters. */
+        /**
+         * Opens the page and waits for it to show, on optional
+         * `screen: desktop | phone` (default desktop).
+         */
         async open(...args) {
+            const params = parseDslArgs(args, { screen: screen() });
+
+            await driver.open(params.screen);
+        },
+
+        /** `recipe`: opens it from the list. */
+        async openRecipe(...args) {
+            const params = parseDslArgs(args, { recipe: alias() });
+
+            await driver.openRecipe(world.recipeNamed(params.recipe));
+        },
+
+        /** The browser is on the recipes page. No parameters. */
+        async checkIsShown(...args) {
             parseDslArgs(args, {});
 
-            await driver.open();
+            await driver.isShown();
         },
 
         /**

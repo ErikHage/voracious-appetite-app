@@ -33,6 +33,11 @@ export async function expectNotText(locator, text, what) {
     await expect(locator, failureMessage(what, `${locator} to stop reading "${text}"`)).not.toHaveText(text);
 }
 
+/** `url` is a string to match exactly, or a RegExp. */
+export async function expectUrl(page, url, what) {
+    await expect(page, failureMessage(what, `the browser to be at ${url}`)).toHaveURL(url);
+}
+
 /** For form fields: what has been typed into one. */
 export async function expectValue(locator, value, what) {
     await expect(locator, failureMessage(what, `${locator} to hold "${value}"`)).toHaveValue(value);

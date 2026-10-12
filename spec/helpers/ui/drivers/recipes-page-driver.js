@@ -5,8 +5,10 @@ import {
     expectSorted,
     expectText,
     expectThat,
+    expectUrl,
     expectVisible,
 } from './assertions';
+import { openOn, urlOf } from './screens';
 
 // The app's sort rule, re-stated rather than imported from src/, so a change
 // to it breaks this test instead of silently agreeing with it
@@ -43,10 +45,20 @@ export function createRecipesPageDriver(page) {
     }
 
     return {
-        async open() {
-            // Relative to baseURL, which ends in the app's base path
-            await page.goto('recipes');
+        async open(screen) {
+            await openOn(page, screen, 'recipes');
             await expectVisible(heading, 'opening the recipes page');
+        },
+
+        async isShown() {
+            const what = 'showing the recipes page';
+
+            await expectUrl(page, urlOf('recipes'), what);
+            await expectVisible(heading, what);
+        },
+
+        async openRecipe(recipe) {
+            await recipeButton(recipe.name).click();
         },
 
         /** Returns `{ name }` for the first listed recipe that fits. */

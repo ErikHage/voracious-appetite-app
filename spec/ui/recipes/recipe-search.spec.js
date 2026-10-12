@@ -37,6 +37,18 @@ test.describe('Recipe search', () => {
         await recipesPage.checkListsEveryRecipeByName();
     });
 
+    test('keeps the search after opening a recipe and coming back', async ({ recipesPage, recipeDetailsPage }) => {
+        await recipesPage.open();
+        await recipesPage.chooseRecipe('recipe: chosen');
+        await recipesPage.search.searchForWordOf('recipe: chosen');
+        await recipesPage.openRecipe('recipe: chosen');
+
+        await recipeDetailsPage.goBackToRecipes();
+
+        await recipesPage.search.checkHoldsWordOf('recipe: chosen');
+        await recipesPage.checkSearchFound('recipe: chosen');
+    });
+
     // DocumentsCurrentBehavior: finds nothing. recipes-service joins a name's
     // words with '.' in the string the search matches, so any search with a
     // space in it misses. Should list the recipe.

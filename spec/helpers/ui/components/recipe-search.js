@@ -41,6 +41,13 @@ export function createRecipeSearch(world, driver) {
             await driver.searchFor(world.recipeNamed(params.recipe).name);
         },
 
+        /** `recipe`: the search box still holds the word searched for by `searchForWordOf`. */
+        async checkHoldsWordOf(...args) {
+            const params = parseDslArgs(args, { recipe: alias() });
+
+            await driver.holds(longestWord(world.recipeNamed(params.recipe).name));
+        },
+
         /** Empties the search box with its clear button. No parameters. */
         async clear(...args) {
             parseDslArgs(args, {});

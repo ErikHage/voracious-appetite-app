@@ -1,6 +1,8 @@
 import { test as base } from '@playwright/test';
 
 import { createWorld } from './world';
+import { createDashboardPage } from './pages/dashboard-page';
+import { createRecipeDetailsPage } from './pages/recipe-details-page';
 import { createRecipesPage } from './pages/recipes-page';
 
 /**
@@ -22,7 +24,15 @@ export const test = base.extend({
         await world.cleanup();
     },
 
+    dashboardPage: async ({ world }, use) => {
+        await use(createDashboardPage(world, world.drivers.dashboardPage));
+    },
+
     recipesPage: async ({ world }, use) => {
         await use(createRecipesPage(world, world.drivers.recipesPage));
+    },
+
+    recipeDetailsPage: async ({ world }, use) => {
+        await use(createRecipeDetailsPage(world, world.drivers.recipeDetailsPage));
     },
 });

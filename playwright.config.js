@@ -14,6 +14,9 @@ export default defineConfig({
     reporter: [['list'], ['html', { open: 'never' }]],
     use: {
         baseURL: appUrl,
+        // Without one, a click on a missing element waits out the whole test
+        // timeout and reports only that
+        actionTimeout: 10_000,
         trace: 'retain-on-failure',
         screenshot: 'only-on-failure',
     },
