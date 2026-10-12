@@ -1,0 +1,4 @@
+# Local start/stop scripts
+start-voracious-appetite.sh
+stop-voracious-appetite.sh
+.run
