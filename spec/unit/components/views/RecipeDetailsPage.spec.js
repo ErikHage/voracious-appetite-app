@@ -17,7 +17,7 @@ const recipe = {
     steps: [{ text: 'Brown the beef.' }],
 };
 
-async function mountPage(selectedRecipe) {
+async function mountPage(selectedRecipe, state = {}) {
     const router = createRouter({
         history: createMemoryHistory(),
         routes: [
@@ -28,7 +28,7 @@ async function mountPage(selectedRecipe) {
     router.push('/recipes/42');
     await router.isReady();
 
-    const pinia = createTestingPinia({ initialState: { common: { selectedRecipe } } });
+    const pinia = createTestingPinia({ initialState: { common: { selectedRecipe, ...state } } });
     const wrapper = mountWithPlugins(RecipeDetailsPage, {
         global: { plugins: [pinia, router] },
     });
@@ -47,6 +47,26 @@ describe('RecipeDetailsPage', () => {
 
         expect(wrapper.find('.v-skeleton-loader').exists()).toBe(true);
         expect(wrapper.find('h1').exists()).toBe(false);
+    });
+
+    it('says when the recipe was not found, in place of the skeleton', async () => {
+        const { wrapper } = await mountPage(null, { selectedRecipeError: 'not-found' });
+
+        expect(wrapper.find('.v-alert').text()).toContain('Recipe not found');
+        expect(wrapper.find('.v-skeleton-loader').exists()).toBe(false);
+    });
+
+    it('says when the recipe could not be loaded for another reason', async () => {
+        const { wrapper } = await mountPage(null, { selectedRecipeError: 'failed' });
+
+        expect(wrapper.find('.v-alert').text()).toContain('Unable to load this recipe');
+        expect(wrapper.find('.v-skeleton-loader').exists()).toBe(false);
+    });
+
+    it('shows the back link when the recipe could not be loaded', async () => {
+        const { wrapper } = await mountPage(null, { selectedRecipeError: 'not-found' });
+
+        expect(wrapper.find('#back-to-recipes').exists()).toBe(true);
     });
 
     it('shows the recipe name, keywords and sections once loaded', async () => {

@@ -19,7 +19,6 @@
           <div class="text-center">
             <h1>{{ selectedRecipe.recipeName }}</h1>
             <h3 v-if="!!keywords">{{ keywords }}</h3>
-            <fade-out-alert :is-visible="alert.isVisible" :alert-type="alert.type" :message="alert.message"/>
           </div>
         </v-col>
       </v-row>
@@ -54,6 +53,13 @@
         </v-col>
       </v-row>
     </div>
+    <v-row v-else-if="selectedRecipeError">
+      <v-col>
+        <v-alert type="error" class="mx-auto" max-width="600">
+          {{ errorMessage }}
+        </v-alert>
+      </v-col>
+    </v-row>
     <div v-else>
       <v-skeleton-loader
           type="heading, paragraph, paragraph"
@@ -66,7 +72,6 @@
 </template>
 
 <script>
-import FadeOutAlert from "@/components/utils/FadeOutAlert.vue";
 import {mapActions, mapState} from "pinia";
 import {useCommonStore} from "@/store";
 import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
@@ -82,15 +87,12 @@ export default {
     NutritionInfo,
     IngredientsList,
     TimeAndYield,
-    FadeOutAlert,
   },
 
   computed: {
     ...mapState(useCommonStore, {
       selectedRecipe: 'selectedRecipe',
-      alertType: 'alertType',
-      alertMessage: 'alertMessage',
-      alertVisible: 'alertVisible',
+      selectedRecipeError: 'selectedRecipeError',
     }),
 
     keywords() {
@@ -100,12 +102,10 @@ export default {
       return '';
     },
 
-    alert() {
-      return {
-        isVisible: this.alertVisible,
-        type: this.alertType,
-        message: this.alertMessage,
-      };
+    errorMessage() {
+      return this.selectedRecipeError === 'not-found'
+          ? 'Recipe not found'
+          : 'Unable to load this recipe';
     },
   },
 

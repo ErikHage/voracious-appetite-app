@@ -30,6 +30,7 @@ describe('useCommonStore', () => {
             status: 'idle',
             recipes: [],
             selectedRecipe: null,
+            selectedRecipeError: null,
             alertVisible: false,
             alertType: 'success',
             alertMessage: null,
@@ -104,16 +105,45 @@ describe('useCommonStore', () => {
             expect(store.status).toBe('idle');
         });
 
-        it('shows an error alert and sets error status on failure', async () => {
-            recipesApi.getRecipeById.mockRejectedValue(new Error('boom'));
+        it('forgets the previous recipe while the next one loads', () => {
+            store.selectedRecipe = { recipeId: '7', recipeName: 'Soup' };
+            store.selectedRecipeError = 'failed';
+            recipesApi.getRecipeById.mockReturnValue(new Promise(() => {}));
+
+            store.loadSelectedRecipe('42');
+
+            expect(store.selectedRecipe).toBeNull();
+            expect(store.selectedRecipeError).toBeNull();
+            expect(store.status).toBe('loading');
+        });
+
+        it('records a recipe the service does not have as not found', async () => {
+            recipesApi.getRecipeById.mockRejectedValue(Object.assign(new Error('Not Found'), { status: 404 }));
 
             await store.loadSelectedRecipe('42');
 
             expect(store.status).toBe('error');
             expect(store.selectedRecipe).toBeNull();
-            expect(store.alertType).toBe('error');
-            // current behavior: the message says "recipes" even for a single recipe
-            expect(store.alertMessage).toBe('unable to load recipes');
+            expect(store.selectedRecipeError).toBe('not-found');
+        });
+
+        it('records any other failure as failed, and logs it', async () => {
+            const err = new Error('boom');
+            recipesApi.getRecipeById.mockRejectedValue(err);
+
+            await store.loadSelectedRecipe('42');
+
+            expect(store.status).toBe('error');
+            expect(store.selectedRecipeError).toBe('failed');
+            expect(console.error).toHaveBeenCalledWith(err);
+        });
+
+        it('leaves the shared alert alone, since the page shows the failure itself', async () => {
+            recipesApi.getRecipeById.mockRejectedValue(new Error('boom'));
+
+            await store.loadSelectedRecipe('42');
+
+            expect(store.alertVisible).toBe(false);
         });
     });
 });
