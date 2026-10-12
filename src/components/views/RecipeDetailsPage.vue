@@ -35,7 +35,7 @@
                       :cook="selectedRecipe.cook"
                       :yield="selectedRecipe.yield"
                   />
-                  <Nutrition
+                  <NutritionInfo
                       class="ma-1 mt-auto"
                     :nutrition="selectedRecipe.nutrition"/>
                 </v-col>
@@ -71,7 +71,7 @@ import {mapActions, mapState} from "pinia";
 import {useCommonStore} from "@/store";
 import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
 import IngredientsList from "@/components/recipes/IngredientsList.vue";
-import Nutrition from "@/components/recipes/Nutrition.vue";
+import NutritionInfo from "@/components/recipes/NutritionInfo.vue";
 import PreparationStepsList from "@/components/recipes/PreparationStepsList.vue";
 
 export default {
@@ -79,7 +79,7 @@ export default {
 
   components: {
     PreparationStepsList,
-    Nutrition,
+    NutritionInfo,
     IngredientsList,
     TimeAndYield,
     FadeOutAlert,

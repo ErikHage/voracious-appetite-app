@@ -1,9 +1,9 @@
 import { mountWithPlugins } from '../../../helpers/mount';
-import Dashboard from '@/components/views/Dashboard.vue';
+import DashboardPage from '@/components/views/DashboardPage.vue';
 
-describe('Dashboard', () => {
+describe('DashboardPage', () => {
     it('shows the logo from the asset path', () => {
-        const wrapper = mountWithPlugins(Dashboard, { global: { mocks: { $router: { push: vi.fn() } } } });
+        const wrapper = mountWithPlugins(DashboardPage, { global: { mocks: { $router: { push: vi.fn() } } } });
 
         expect(wrapper.find('h1').text()).toBe('Voracious Appetite');
         expect(wrapper.vm.getAssetPath('ai-cardinal.jpg')).toBe('/assets-test/ai-cardinal.jpg');
@@ -11,7 +11,7 @@ describe('Dashboard', () => {
 
     it('navigates to the recipes list', async () => {
         const router = { push: vi.fn() };
-        const wrapper = mountWithPlugins(Dashboard, { global: { mocks: { $router: router } } });
+        const wrapper = mountWithPlugins(DashboardPage, { global: { mocks: { $router: router } } });
 
         await wrapper.find('button').trigger('click');
 

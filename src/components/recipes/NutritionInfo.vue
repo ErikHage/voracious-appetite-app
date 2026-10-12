@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: "Nutrition",
+  name: "NutritionInfo",
 
   props: {
     nutrition: {

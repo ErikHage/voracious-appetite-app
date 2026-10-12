@@ -30,7 +30,7 @@
 import {getAssetPath} from "@/utils/assets";
 
 export default {
-  name: 'Dashboard',
+  name: 'DashboardPage',
 
   data: () => ({}),
 

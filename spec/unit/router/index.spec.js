@@ -1,5 +1,5 @@
 import router from '@/router';
-import Dashboard from '@/components/views/Dashboard.vue';
+import DashboardPage from '@/components/views/DashboardPage.vue';
 import RecipesPage from '@/components/views/RecipesPage.vue';
 import RecipeDetailsPage from '@/components/views/RecipeDetailsPage.vue';
 
@@ -9,7 +9,7 @@ describe('router', () => {
     });
 
     it.each([
-        ['/', 'dashboard', Dashboard],
+        ['/', 'dashboard', DashboardPage],
         ['/recipes', 'recipes-list', RecipesPage],
         ['/recipes/42', 'recipe-details', RecipeDetailsPage],
     ])('resolves %s to the %s route', (path, name, component) => {

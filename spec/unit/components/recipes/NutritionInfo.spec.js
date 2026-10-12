@@ -1,14 +1,14 @@
 import { mountWithPlugins } from '../../../helpers/mount';
-import Nutrition from '@/components/recipes/Nutrition.vue';
+import NutritionInfo from '@/components/recipes/NutritionInfo.vue';
 
 function rowValues(wrapper) {
     return Object.fromEntries(
         wrapper.findAll('tbody tr').map(row => [row.find('th').text(), row.find('td').text()]));
 }
 
-describe('Nutrition', () => {
+describe('NutritionInfo', () => {
     it('shows each nutrition value', () => {
-        const wrapper = mountWithPlugins(Nutrition, {
+        const wrapper = mountWithPlugins(NutritionInfo, {
             props: {
                 nutrition: { calories: 450, fats: 12, carbohydrates: 30, sugars: 5, protein: 40 },
             },
@@ -24,7 +24,7 @@ describe('Nutrition', () => {
     });
 
     it('shows --- for missing values but keeps zeros', () => {
-        const wrapper = mountWithPlugins(Nutrition, {
+        const wrapper = mountWithPlugins(NutritionInfo, {
             props: { nutrition: { calories: 0, sugars: null } },
         });
 
@@ -41,7 +41,7 @@ describe('Nutrition', () => {
         // current behavior: the prop default `() => {}` returns undefined, not an empty object
         vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-        expect(() => mountWithPlugins(Nutrition)).toThrow(TypeError);
+        expect(() => mountWithPlugins(NutritionInfo)).toThrow(TypeError);
 
         vi.restoreAllMocks();
     });
