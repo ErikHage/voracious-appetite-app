@@ -7,6 +7,10 @@ import { appUrl } from './spec/helpers/ui/setup/config';
 export default defineConfig({
     testDir: './spec/ui',
     globalSetup: './spec/helpers/ui/setup/global-setup.js',
+    // The Vite dev server serves each page as hundreds of unbundled modules.
+    // On a slow machine, three or more browsers loading at once time out, and
+    // two run no faster than one. Override with --workers on a faster machine
+    workers: 1,
     reporter: [['list'], ['html', { open: 'never' }]],
     use: {
         baseURL: appUrl,
