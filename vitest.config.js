@@ -7,6 +7,9 @@ export default mergeConfig(viteConfig, defineConfig({
     globals: true,
     include: ['spec/unit/**/*.spec.js'],
     setupFiles: ['spec/setup.js'],
+    // Builds jsdom once per worker instead of once per file, which halves
+    // the run time while keeping each file in its own context
+    pool: 'vmThreads',
     server: {
       deps: {
         // Vuetify imports its own CSS, which must go through Vite

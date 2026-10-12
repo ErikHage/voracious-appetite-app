@@ -40,3 +40,10 @@ Add a unit-test safety net before upgrading dependencies to clear `npm audit` vu
 
 - Upgraded to Vitest 5 and `@vitest/coverage-v8` 5 as part of the security updates (see `docs/2026-10-11-security-updates.md`). This resolves the open Vitest audit note above. No spec changes were needed; 68 tests pass.
 - Removed `babel.config.js` and the `@babel/eslint-parser` reference (the leftover Vue CLI config noted above). Lint now uses `eslint.config.mjs`.
+
+## 2026-10-11
+
+- Vitest 5 printed a hint after each run: "jsdom was created 15 times … 49% of tracked time". Each spec file started its own jsdom, and that setup was about half the run time.
+- Set `pool: 'vmThreads'` in `vitest.config.js`. Each worker now builds jsdom once and runs each spec file in its own VM context, so files stay isolated from each other. The hint is gone, and `npm run test:unit` went from about 12s to about 5.5s. 76 tests pass, and coverage is unchanged.
+- Declined `isolate: false`: it took about 8s and lets state (`sessionStorage`, globals) leak between spec files.
+- Caveat: VM pools use more memory and can trip `instanceof` checks against Node globals. If a future spec hits that, run just that file under `forks` in its own Vitest project.
