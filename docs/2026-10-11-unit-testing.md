@@ -35,3 +35,8 @@ Add a unit-test safety net before upgrading dependencies to clear `npm audit` vu
 **Open notes**
 - Installing the test tooling took `npm audit` from 21 to 24 findings. The new ones are dev-only: Vitest 3.2.7 (critical, via `tinypool` and `@vitest/mocker`). The fix is Vitest 5, which needs `vite@^6.4.0` (6.3.6 is installed). Upgrade `vitest` and `@vitest/coverage-v8` along with vite.
 - npm blocked the install scripts for `esbuild` and `vue-demi`. Both work without them: vue-demi defaults to Vue 3.
+
+## 2026-10-11
+
+- Upgraded to Vitest 5 and `@vitest/coverage-v8` 5 as part of the security updates (see `docs/2026-10-11-security-updates.md`). This resolves the open Vitest audit note above. No spec changes were needed; 68 tests pass.
+- Removed `babel.config.js` and the `@babel/eslint-parser` reference (the leftover Vue CLI config noted above). Lint now uses `eslint.config.mjs`.
