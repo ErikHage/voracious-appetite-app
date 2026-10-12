@@ -19,3 +19,7 @@ Make a recipe's page say when the recipe can't be loaded, instead of showing "Lo
 - The UI suite's pinned test failed on the fix, as it should; it's unpinned in the next commit.
 
 **How to check by hand:** `npm run dev`, then open `/apps/voracious-appetite/recipes/no-such-recipe`. The page says "Recipe not found" under the back link.
+
+## 2026-10-12
+
+- The UI suite now checks the fix: an unknown id shows "Recipe not found", with no skeleton or recipe heading, and the back link still works. With the fix reverted, that test failed. With it, 57 of 57 repeated runs passed.

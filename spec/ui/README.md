@@ -35,7 +35,7 @@ helpers/ui/drivers/assertions.js  the only importer of expect
 
 **Navigation is checked at the destination.** A step that clicks (`appBar.goToRecipes()`) asserts nothing; the next step checks where it led (`recipesPage.checkIsShown()`), by URL and heading. A page's `open` takes an optional `screen: desktop | phone`. A page with no URL a spec could know, like a recipe's page, has no `open`; it's reached from another page (`recipesPage.openRecipe('recipe: chosen')`).
 
-**Known-wrong behaviour is pinned, not skipped.** A `// DocumentsCurrentBehavior:` comment above the test says what happens today and what should happen. The test title and the step name the intent (`checkFindsRecipeByFullName`). The driver method names today's behaviour (`fullNameSearchFindsNothing`), so it's the one thing a fix renames.
+**Known-wrong behaviour is pinned, not skipped.** A `// DocumentsCurrentBehavior:` comment above the test says what happens today and what should happen. The test title and the step name the intent (e.g. `checkReportsRecipeNotFound`). The driver method names today's behaviour (it was `keepsShowingLoading`), so it's the one thing a fix renames. Both bugs pinned so far have since been fixed, so no test is pinned at the moment.
 
 ## Rules
 

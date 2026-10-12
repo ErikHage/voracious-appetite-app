@@ -120,3 +120,10 @@ The `dsl-tests` skill's UI section gets updated after batch 1, once components a
 - **Added "finds a recipe by the words of its name in any order":** `searchForNameOf` takes an optional `order: as listed | reversed`.
 - **Status:** 19 UI tests pass, and 57 of 57 repeated runs passed. With the old substring match put back in the app, both full-name tests failed (`expected: … 'Alfredo Sauce' … to be visible`).
 - **Pinned bug left:** the unknown recipe page.
+
+## 2026-10-12
+
+**Unpinned the unknown recipe page** after the app fix (see `docs/2026-10-12-recipe-not-found.md`).
+- "Says when a recipe does not exist" lost its `DocumentsCurrentBehavior` comment. The step `checkReportsRecipeNotFound` kept its name. Its driver method `keepsShowingLoading` became `reportsRecipeNotFound`, as the convention intends.
+- `reportsRecipeNotFound` waits for the "Recipe not found" alert. It then reads the page once to check that neither the skeleton nor a recipe heading shows, still after `openUnknownRecipe`'s sync point. That sync point still holds, because the store still logs the `ApiError`.
+- **Status:** 19 UI tests pass, and 57 of 57 repeated runs passed. With the app fix reverted, the test failed (`expected: … 'Recipe not found' … to be visible`). No tests are pinned now. The suite README's example of a pinned test now refers to this one, since it had still named the full-name methods removed earlier.

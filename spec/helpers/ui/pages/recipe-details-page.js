@@ -41,7 +41,7 @@ export function createRecipeDetailsPage(world, driver) {
         async checkReportsRecipeNotFound(...args) {
             parseDslArgs(args, {});
 
-            await driver.keepsShowingLoading();
+            await driver.reportsRecipeNotFound();
         },
 
         /** Follows the "Back to recipes" link. No parameters. */

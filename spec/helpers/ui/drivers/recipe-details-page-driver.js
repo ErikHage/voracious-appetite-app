@@ -19,9 +19,9 @@ export function createRecipeDetailsPageDriver(page) {
     const main = page.getByRole('main');
     // Shown once the recipe has loaded; a skeleton stands in until then
     const heading = main.getByRole('heading', { level: 1 });
-    // The skeleton announces itself as an alert, so it counts among these
-    const alerts = main.getByRole('alert');
+    // The skeleton announces itself as an alert named "Loading..."
     const loading = main.getByRole('alert', { name: 'Loading...' });
+    const notFound = main.getByRole('alert').filter({ hasText: 'Recipe not found' });
     const backLink = main.getByRole('link', { name: 'Back to recipes' });
     // `recipes/<id>`, where the id is whatever the service gave the recipe
     const detailsUrl = new RegExp(`^${escapeForRegExp(urlOf('recipes/'))}[^/]+$`);
@@ -60,20 +60,16 @@ export function createRecipeDetailsPageDriver(page) {
             await handled;
         },
 
-        // Today's behaviour: the error alert sits inside the block that renders
-        // only once a recipe has loaded, so the skeleton stays and nothing else
-        // shows
-        async keepsShowingLoading() {
+        async reportsRecipeNotFound() {
             const what = 'showing a recipe that doesn\'t exist';
 
-            await expectVisible(loading, what);
+            await expectVisible(notFound, what);
 
-            // Read once, not with a retrying assertion: the app's error alert
-            // fades out after 3 seconds, so retrying "only one alert" would
-            // pass once it had gone. openUnknownRecipe waited until the app
-            // had handled the 404, so anything it shows is already there
-            const shown = await alerts.allTextContents();
-            expectThat(shown.length === 1, 'only the "Loading..." skeleton', JSON.stringify(shown), what);
+            // Read once, not with a retrying assertion, which would pass as
+            // soon as something that shouldn't be there went away.
+            // openUnknownRecipe waited until the app had handled the 404, so
+            // the page has settled
+            expectThat(await loading.count() === 0, 'no "Loading..." skeleton', 'it is still shown', what);
             expectThat(await heading.count() === 0, 'no recipe heading', 'a heading', what);
         },
 
