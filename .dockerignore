@@ -2,3 +2,6 @@
 start-voracious-appetite.sh
 stop-voracious-appetite.sh
 .run
+
+# Installed fresh in the image by npm install
+node_modules

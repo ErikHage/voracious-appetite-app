@@ -19,3 +19,5 @@ Start and stop recipes-service and the voracious-appetite-app together for local
 **Declined:** Docker compose. Docker isn't installed locally, and the compose files pull published images rather than running local code.
 
 **Verification:** I ran start outside the sandbox, because this session's sandboxed network fails TLS to github.com. The service loaded 70 recipes from GitHub. A recipe's detail endpoint worked, CORS allows the app's origin, the app served its pages, and the app used `http://localhost:3000/api/recipes-service`. Stop freed both ports. Earlier sandboxed runs covered the other paths: start reports a service that exits (with the log tail), and a second start reports processes that are already running.
+
+**Docker:** `.dockerignore` now also excludes `node_modules`. Before, the Dockerfile's `COPY . .` copied the local `node_modules` (Windows binaries, dev installs) over the one `npm install` had just built in the image.
