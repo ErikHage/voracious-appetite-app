@@ -4,10 +4,12 @@ import RecipesPage from '@/components/views/RecipesPage.vue';
 import { useCommonStore } from '@/store';
 import { recipeFilterStorageKey } from '@/utils/constants';
 
+// filterMatchString as recipes-service builds it: the name's words, then the
+// keywords, joined with '.' and lowercased
 const recipes = [
-    { recipeId: '2', recipeName: 'Lentil Soup', filterMatchString: 'Lentil Soup vegan' },
-    { recipeId: '1', recipeName: 'Beef Stew', filterMatchString: 'Beef Stew comfort' },
-    { recipeId: '3', recipeName: 'Apple Pie', filterMatchString: 'Apple Pie dessert vegan' },
+    { recipeId: '2', recipeName: 'Lentil Soup', filterMatchString: 'lentil.soup.vegan' },
+    { recipeId: '1', recipeName: 'Beef Stew', filterMatchString: 'beef.stew.comfort' },
+    { recipeId: '3', recipeName: 'Apple Pie', filterMatchString: 'apple.pie.dessert.vegan' },
 ];
 
 function mountPage(state = {}) {
@@ -60,6 +62,47 @@ describe('RecipesPage', () => {
 
         expect(recipeNames(wrapper)).toEqual(expect.arrayContaining(['Lentil Soup', 'Apple Pie']));
         expect(wrapper.text()).toContain('Showing 2 of 3 recipes');
+    });
+
+    it('finds a recipe by its full name', async () => {
+        const { wrapper } = mountPage();
+
+        await wrapper.find('#filter-recipes').setValue('Lentil Soup');
+
+        expect(recipeNames(wrapper)).toEqual(['Lentil Soup']);
+    });
+
+    it('matches the words in any order', async () => {
+        const { wrapper } = mountPage();
+
+        await wrapper.find('#filter-recipes').setValue('soup lentil');
+
+        expect(recipeNames(wrapper)).toEqual(['Lentil Soup']);
+    });
+
+    it('matches a word of the name together with a keyword', async () => {
+        const { wrapper } = mountPage();
+
+        await wrapper.find('#filter-recipes').setValue('soup vegan');
+
+        expect(recipeNames(wrapper)).toEqual(['Lentil Soup']);
+    });
+
+    it('needs every word to match', async () => {
+        const { wrapper } = mountPage();
+
+        await wrapper.find('#filter-recipes').setValue('soup dessert');
+
+        expect(recipeNames(wrapper)).toEqual([]);
+        expect(wrapper.text()).toContain('Showing 0 of 3 recipes');
+    });
+
+    it('lists every recipe for a search of only spaces', async () => {
+        const { wrapper } = mountPage();
+
+        await wrapper.find('#filter-recipes').setValue('   ');
+
+        expect(wrapper.text()).toContain('Showing 3 of 3 recipes');
     });
 
     it('keeps the store order when a filter is active', async () => {

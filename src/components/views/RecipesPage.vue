@@ -100,8 +100,15 @@ export default {
       let filtered = [...this.recipes];
 
       if (this.recipeFilter) {
-        return this.recipes.filter(
-            recipe => recipe.filterMatchString.toLowerCase().includes(this.recipeFilter.toLowerCase()));
+        // Every word typed must appear somewhere in the recipe's match string,
+        // in any order. recipes-service joins a recipe's words with '.', so the
+        // search as typed (with its spaces) never appears whole
+        const words = this.recipeFilter.toLowerCase().split(/\s+/).filter(Boolean);
+
+        return this.recipes.filter(recipe => {
+          const matchString = recipe.filterMatchString.toLowerCase();
+          return words.every(word => matchString.includes(word));
+        });
       }
 
       return filtered.sort((a, b) =>
