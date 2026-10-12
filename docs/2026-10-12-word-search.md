@@ -20,3 +20,8 @@ Make the recipe search find a recipe by its full name, and by its words in any o
 - The UI suite's pinned full-name test failed on the fix, as it should; it's unpinned in the next commit.
 
 **How to check by hand:** `npm run dev`, then search "vanilla cake" and "cake vanilla". Both list Vanilla Cake and Vanilla Cake Glaze.
+
+## 2026-10-12
+
+- **Correction to the hand check above:** "vanilla cake" and "cake vanilla" list three recipes, not two. Quick Vanilla Buttercream Frosting matches too, because "cake" is one of its keywords (`quick.vanilla.buttercream.frosting.frosting.vanilla.cake`). That's intended: each word can match the name or a keyword. A multi-word keyword such as "ice cream" still matches, since both of its words appear.
+- The UI suite now covers the fix: a full name, and the same name with its words reversed. With the old substring match put back, both tests failed. With the fix, 57 of 57 repeated runs passed (`--repeat-each=3`).

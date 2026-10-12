@@ -34,11 +34,20 @@ export function createRecipeSearch(world, driver) {
             await driver.searchFor(params.case === 'upper' ? word.toUpperCase() : word);
         },
 
-        /** `recipe`: searches for the recipe's whole name, as listed. */
+        /**
+         * `recipe`, and optional `order: as listed | reversed` (default
+         * `as listed`): searches for the recipe's whole name, its words in
+         * that order.
+         */
         async searchForNameOf(...args) {
-            const params = parseDslArgs(args, { recipe: alias() });
+            const params = parseDslArgs(args, {
+                recipe: alias(),
+                order: optional().allowedValues('as listed', 'reversed').withDefault('as listed'),
+            });
 
-            await driver.searchFor(world.recipeNamed(params.recipe).name);
+            const words = world.recipeNamed(params.recipe).name.split(' ');
+
+            await driver.searchFor((params.order === 'reversed' ? words.reverse() : words).join(' '));
         },
 
         /** `recipe`: the search box still holds the word searched for by `searchForWordOf`. */

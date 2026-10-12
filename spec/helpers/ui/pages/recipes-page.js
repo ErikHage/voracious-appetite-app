@@ -85,12 +85,5 @@ export function createRecipesPage(world, driver) {
 
             await driver.searchFoundNothing();
         },
-
-        /** `recipe`: searching for its whole name lists it. */
-        async checkFindsRecipeByFullName(...args) {
-            const params = parseDslArgs(args, { recipe: alias() });
-
-            await driver.fullNameSearchFindsNothing(world.recipeNamed(params.recipe));
-        },
     };
 }

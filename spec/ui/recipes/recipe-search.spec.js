@@ -49,15 +49,21 @@ test.describe('Recipe search', () => {
         await recipesPage.checkSearchFound('recipe: chosen');
     });
 
-    // DocumentsCurrentBehavior: finds nothing. recipes-service joins a name's
-    // words with '.' in the string the search matches, so any search with a
-    // space in it misses. Should list the recipe.
     test('finds a recipe by its full name', async ({ recipesPage }) => {
         await recipesPage.open();
         await recipesPage.chooseRecipe('recipe: chosen', 'words: several');
 
         await recipesPage.search.searchForNameOf('recipe: chosen');
 
-        await recipesPage.checkFindsRecipeByFullName('recipe: chosen');
+        await recipesPage.checkSearchFound('recipe: chosen');
+    });
+
+    test('finds a recipe by the words of its name in any order', async ({ recipesPage }) => {
+        await recipesPage.open();
+        await recipesPage.chooseRecipe('recipe: chosen', 'words: several');
+
+        await recipesPage.search.searchForNameOf('recipe: chosen', 'order: reversed');
+
+        await recipesPage.checkSearchFound('recipe: chosen');
     });
 });

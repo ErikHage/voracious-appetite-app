@@ -100,12 +100,5 @@ export function createRecipesPageDriver(page) {
         async searchFoundNothing() {
             await listIsEmpty('searching for something no recipe has');
         },
-
-        // Today's behaviour. recipes-service builds the string the search
-        // matches by joining a name's words with '.', so a search with a space
-        // in it matches nothing
-        async fullNameSearchFindsNothing(recipe) {
-            await listIsEmpty(`searching for the full name "${recipe.name}"`);
-        },
     };
 }

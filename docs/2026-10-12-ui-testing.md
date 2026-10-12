@@ -111,3 +111,12 @@ The `dsl-tests` skill's UI section gets updated after batch 1, once components a
 - **Absence is checked with a single read, not a retrying assertion.** A retrying `toHaveCount(1)` on the page's alerts passed even with the bug fixed: it kept retrying until the app's error alert faded out after 3s. The driver now reads the alerts once, after the app has handled the 404.
 - **Status:** 18 UI tests and 76 unit tests pass, and the layering greps are clean. I simulated the fix by moving the error alert out of the `v-if` block: the pinned test failed with `expected: only the "Loading..." skeleton / actual: ["unable to load recipes",""]`, and I reverted the change. The pinned test passed 5 runs out of 5 on the app as it is.
 - A failed list load is still left to the unit tests, as decided.
+
+## 2026-10-12
+
+**Unpinned the full-name search** after the app fix (see `docs/2026-10-12-word-search.md`).
+- "Finds a recipe by its full name" lost its `DocumentsCurrentBehavior` comment. It now ends with `checkSearchFound`, the same check the word search uses: the recipe is listed and the list narrowed.
+- Removed the pinned step `checkFindsRecipeByFullName` and its driver method `fullNameSearchFindsNothing`. As the convention intends, the driver method named after the old behaviour was the one the fix removed.
+- **Added "finds a recipe by the words of its name in any order":** `searchForNameOf` takes an optional `order: as listed | reversed`.
+- **Status:** 19 UI tests pass, and 57 of 57 repeated runs passed. With the old substring match put back in the app, both full-name tests failed (`expected: … 'Alfredo Sauce' … to be visible`).
+- **Pinned bug left:** the unknown recipe page.
