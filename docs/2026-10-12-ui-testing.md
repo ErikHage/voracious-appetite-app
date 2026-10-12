@@ -100,3 +100,14 @@ The `dsl-tests` skill's UI section gets updated after batch 1, once components a
   - steps in an unordered list;
   - ingredient names dropped;
   - prep time without its unit.
+
+## 2026-10-12
+
+**Batch 4 (errors), done.** 18 UI tests in all; this finishes the planned tests.
+- **"Says when a recipe does not exist" is pinned (`DocumentsCurrentBehavior`).** After recipes-service answers `404 RECIPE_NOT_FOUND`, the page keeps showing its skeleton, which screen readers hear as an alert, "Loading...". Nothing else shows, because the error alert sits inside the `v-if="selectedRecipe"` block. The step names the intent (`checkReportsRecipeNotFound`), and the driver method names today's behaviour (`keepsShowingLoading`). The test then follows the back link, to show the page is still usable.
+- **`openUnknownRecipe` makes up an id** (`ui-no-such-recipe-<random>`) and waits for two things:
+  - The service's 404. This is the control: the test only means something if the service really said "not found". Matching on the URL's ending first caught the page's own load, which Vite answers 200, so it now matches the service URL exactly.
+  - The app's `console.error` of the `ApiError`, which it logs as it handles the failure. After that, anything the app shows about the failure has rendered. This couples the driver to the app logging that error; if the logging stops, the step times out after 10s and says so.
+- **Absence is checked with a single read, not a retrying assertion.** A retrying `toHaveCount(1)` on the page's alerts passed even with the bug fixed: it kept retrying until the app's error alert faded out after 3s. The driver now reads the alerts once, after the app has handled the 404.
+- **Status:** 18 UI tests and 76 unit tests pass, and the layering greps are clean. I simulated the fix by moving the error alert out of the `v-if` block: the pinned test failed with `expected: only the "Loading..." skeleton / actual: ["unable to load recipes",""]`, and I reverted the change. The pinned test passed 5 runs out of 5 on the app as it is.
+- A failed list load is still left to the unit tests, as decided.

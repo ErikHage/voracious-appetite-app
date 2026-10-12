@@ -8,10 +8,10 @@ import { createPreparationSteps } from '../components/preparation-steps';
 import { createTimeAndYield } from '../components/time-and-yield';
 
 /**
- * A recipe's own page, in words. There is no `open`: a spec reaches it from
- * the list with `recipesPage.openRecipe('recipe: ...')`, since it knows a
- * recipe only by the name it was listed under. Each card on the page is a
- * component, exposed as a property.
+ * A recipe's own page, in words. There is no `open` for a real recipe: a
+ * spec reaches one from the list with `recipesPage.openRecipe('recipe: ...')`,
+ * since it knows a recipe only by the name it was listed under. Each card on
+ * the page is a component, exposed as a property.
  */
 export function createRecipeDetailsPage(world, driver) {
     const { drivers } = world;
@@ -28,6 +28,20 @@ export function createRecipeDetailsPage(world, driver) {
             const params = parseDslArgs(args, { recipe: alias() });
 
             await driver.shows(world.recipeNamed(params.recipe));
+        },
+
+        /** Opens the page for a recipe id the service doesn't have. No parameters. */
+        async openUnknownRecipe(...args) {
+            parseDslArgs(args, {});
+
+            await driver.openUnknownRecipe();
+        },
+
+        /** The page says the recipe wasn't found. No parameters. */
+        async checkReportsRecipeNotFound(...args) {
+            parseDslArgs(args, {});
+
+            await driver.keepsShowingLoading();
         },
 
         /** Follows the "Back to recipes" link. No parameters. */
