@@ -9,7 +9,8 @@
     "lint": "eslint src",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
-    "test:unit:coverage": "vitest run --coverage"
+    "test:unit:coverage": "vitest run --coverage",
+    "test:ui": "playwright test"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
@@ -22,7 +23,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@feral-auth/ts-simple-dsl": "0.0.1",
     "@pinia/testing": "^0.1.7",
+    "@playwright/test": "^1.64.0",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vitest/coverage-v8": "^5.0.3",
     "@vue/test-utils": "^2.5.1",

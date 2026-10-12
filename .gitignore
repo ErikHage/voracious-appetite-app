@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # Local start/stop script state
 /.run
+
+# Playwright output
+/test-results
+/playwright-report
