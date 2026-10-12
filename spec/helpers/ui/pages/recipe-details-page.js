@@ -2,15 +2,26 @@ import { parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
 import { alias } from '../params';
 import { createAppBar } from '../components/app-bar';
+import { createIngredientsList } from '../components/ingredients-list';
+import { createNutritionInfo } from '../components/nutrition-info';
+import { createPreparationSteps } from '../components/preparation-steps';
+import { createTimeAndYield } from '../components/time-and-yield';
 
 /**
  * A recipe's own page, in words. There is no `open`: a spec reaches it from
  * the list with `recipesPage.openRecipe('recipe: ...')`, since it knows a
- * recipe only by the name it was listed under.
+ * recipe only by the name it was listed under. Each card on the page is a
+ * component, exposed as a property.
  */
 export function createRecipeDetailsPage(world, driver) {
+    const { drivers } = world;
+
     return {
-        appBar: createAppBar(world, world.drivers.appBar),
+        appBar: createAppBar(world, drivers.appBar),
+        timeAndYield: createTimeAndYield(world, drivers.timeAndYield),
+        nutrition: createNutritionInfo(world, drivers.nutritionInfo),
+        ingredients: createIngredientsList(world, drivers.ingredientsList),
+        steps: createPreparationSteps(world, drivers.preparationSteps),
 
         /** `recipe`: the page shows that recipe. */
         async checkShows(...args) {

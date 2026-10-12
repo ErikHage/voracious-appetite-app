@@ -81,3 +81,22 @@ The `dsl-tests` skill's UI section gets updated after batch 1, once components a
   - app bar Recipes link to the dashboard: its test, plus the phone test, because of the locator ambiguity above (only its own test after the label);
   - home icon to the list: the phone test;
   - dashboard button to the dashboard: its test.
+
+## 2026-10-12
+
+**Batch 3 (recipe details sections), done.** 17 UI tests in all.
+- **One component object and driver per card,** named after the app's components: `timeAndYield`, `nutrition`, `ingredients` and `steps` on `recipeDetailsPage`. Each driver is scoped to its card with `drivers/cards.js` (`cardTitled`). Cards have no ARIA role, so this one locator is CSS: the `.v-card` whose own title matches exactly. The outer card contains every other card, so matching on text alone finds two.
+- **Four tests instead of the one planned,** one per card. A failure names the card, and a shared `beforeEach` opens the chosen recipe for each.
+- **What each driver asserts.** It's what the app guarantees, not what today's data happens to hold:
+  - time and yield: rows from Prep Time, Cook Time, Yield, in that order, each a value and a unit;
+  - nutrition: all five nutrients in order, each a number or `---`;
+  - ingredients: at least one, each with an amount and a name;
+  - steps: at least one, each worded, in an ordered list.
+- **Live data survey:** all 142 recipes have prep, cook, yield, nutrition (some values `null`), at least 2 ingredients and at least 1 step. So none of the app's "missing field" branches can be reached with live data. For the same reason, the `NutritionInfo` default-prop quirk (a recipe without nutrition throws) can't be shown here.
+- **Coverage gap:** the chosen recipe is the first listed (Alfredo Sauce), whose nutrition is all `---`. So the "number" branch of the nutrition check isn't exercised.
+- New assertion primitives: `expectEqual`, plus `expectEach`, which reports the first failing value and its position.
+- **Status:** 17 UI tests and 76 unit tests pass, and the layering greps are clean. Four temporary breaks each failed only their own card's test, and I reverted each one:
+  - unknown nutrients shown blank;
+  - steps in an unordered list;
+  - ingredient names dropped;
+  - prep time without its unit.

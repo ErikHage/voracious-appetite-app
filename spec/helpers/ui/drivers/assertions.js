@@ -47,6 +47,25 @@ export async function expectCount(locator, count, what) {
     await expect(locator, failureMessage(what, `${locator} to match ${count} element(s)`)).toHaveCount(count);
 }
 
+export function expectEqual(actual, expected, what) {
+    expect(actual, failureMessage(what, JSON.stringify(expected))).toEqual(expected);
+}
+
+/**
+ * Every value passes `isOk`. Reports the first that doesn't, with its
+ * position, rather than the whole list.
+ */
+export function expectEach(values, isOk, expectation, what) {
+    const index = values.findIndex(value => !isOk(value));
+
+    expectThat(
+        index === -1,
+        `every one of ${values.length} to be ${expectation}`,
+        `${JSON.stringify(values[index])} at position ${index}`,
+        what,
+    );
+}
+
 /** Reports the first pair out of order rather than diffing the whole list. */
 export function expectSorted(values, compare, what) {
     const index = values.findIndex((value, i) => i > 0 && compare(values[i - 1], value) > 0);
