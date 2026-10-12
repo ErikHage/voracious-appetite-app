@@ -29,7 +29,7 @@
     "eslint": "^10.12.0",
     "eslint-plugin-vue": "^10.11.1",
     "globals": "^17.13.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^30.1.2",
     "vite": "^6.4.4",
     "vite-plugin-vuetify": "^2.1.1",
     "vitest": "^5.0.3"
@@ -39,5 +39,9 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "allowScripts": {
+    "esbuild": false,
+    "vue-demi": false
+  }
 }

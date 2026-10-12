@@ -22,3 +22,12 @@ Clear the `npm audit` vulnerabilities without changing app behavior.
 - `vue/multi-word-component-names`: `Dashboard`, `Nutrition`.
 - `vue/no-parsing-error`: `TimeAndYield.vue` uses `yield` as a prop name, which is reserved in strict-mode template parsing. It works at runtime.
 - `no-extra-boolean-cast`: `!!mappedKind` in `src/utils/measurements.js`.
+
+## 2026-10-11
+
+Cleared the remaining `npm ci` warnings.
+- **jsdom 26 → 30.** jsdom 26 depended on the deprecated `whatwg-encoding`, and jsdom 28 onward replaced it. jsdom 30 needs Node ^22.22.2 or ^24.15. Local Node is 24.20. The Dockerfile's `node:lts-alpine` isn't pinned, so I didn't check its version; an older Node there would only get an engines warning during `npm install`, since the image doesn't run tests. This supersedes the earlier "declined" note for jsdom 30.
+- **Denied the blocked install scripts** for `esbuild` and `vue-demi` (`allowScripts` in `package.json`), rather than approving them. esbuild's postinstall only validates its binary and, outside Windows, swaps in a faster launcher; vite finds the platform binary without it. vue-demi's only switches between Vue 2 and 3, and it already defaults to Vue 3. Tests and the build passed with both scripts blocked.
+- Note: `npm install-scripts deny --dry-run` wrote the change anyway.
+
+Verification: clean `npm ci` prints no warnings and reports 0 vulnerabilities. `npm run test:unit` passes (68 tests). `npm run build` succeeds.
