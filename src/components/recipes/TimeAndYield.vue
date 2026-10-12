@@ -12,10 +12,13 @@
           <th>Cook Time</th>
           <td>{{ cook.value }} {{ cook.kind }}</td>
         </tr>
+        <!-- `yield` is a reserved word in strict-mode JS, but works as a prop name -->
+        <!-- eslint-disable vue/no-parsing-error -->
         <tr v-if="yield">
           <th>Yield</th>
           <td>{{ yield.value }} {{ yield.kind }}</td>
         </tr>
+        <!-- eslint-enable vue/no-parsing-error -->
         </tbody>
       </v-table>
     </v-card-text>

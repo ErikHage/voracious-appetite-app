@@ -19,7 +19,7 @@ function mapMeasurementKind(kind) {
 
     const mappedKind = measurementDisplayMapper[kind.toLowerCase()];
 
-    if (!!mappedKind) {
+    if (mappedKind) {
         return mappedKind;
     }
 

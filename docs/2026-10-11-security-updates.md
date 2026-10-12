@@ -31,3 +31,12 @@ Cleared the remaining `npm ci` warnings.
 - Note: `npm install-scripts deny --dry-run` wrote the change anyway.
 
 Verification: clean `npm ci` prints no warnings and reports 0 vulnerabilities. `npm run test:unit` passes (68 tests). `npm run build` succeeds.
+
+## 2026-10-11
+
+Resolved the open lint findings. `npm run lint` now passes with no errors.
+- **Multi-word component names:** renamed `Dashboard` → `DashboardPage`, matching the other views (`RecipesPage`, `RecipeDetailsPage`), and `Nutrition` → `NutritionInfo`, after its "Nutritional Information" card title. The files and their specs were renamed too. The route name `dashboard` is unchanged. I chose renaming over disabling the rule.
+- **`yield` prop in `TimeAndYield.vue`:** the template rows that use it are wrapped in `<!-- eslint-disable/enable vue/no-parsing-error -->`. The prop works at runtime, and renaming it would change the component's API and the `:yield` binding in `RecipeDetailsPage`.
+- **`!!mappedKind`** in `src/utils/measurements.js` → `if (mappedKind)`.
+
+Verification: `npm run lint` passes, `npm run test:unit` passes (76 tests), `npm run build` succeeds.
