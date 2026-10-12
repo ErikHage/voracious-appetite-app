@@ -3,3 +3,5 @@ export const assetBasePath = import.meta.env.VITE_ASSET_BASE_PATH;
 export const recipeServiceBaseUrl = {
     v0: import.meta.env.VITE_RECIPE_SERVICE_V0_BASE_URL,
 };
+
+export const recipeFilterStorageKey = 'voracious-appetite.recipeFilter';

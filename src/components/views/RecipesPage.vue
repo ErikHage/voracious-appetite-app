@@ -54,6 +54,7 @@
 import {mapActions, mapState} from "pinia";
 import {useCommonStore} from "@/store";
 import FadeOutAlert from "@/components/utils/FadeOutAlert.vue";
+import {recipeFilterStorageKey} from "@/utils/constants";
 
 export default {
   name: 'RecipesPage',
@@ -64,8 +65,19 @@ export default {
 
   data() {
     return {
-      recipeFilter: '',
+      // sessionStorage keeps the search for this visit only
+      recipeFilter: sessionStorage.getItem(recipeFilterStorageKey) || '',
     };
+  },
+
+  watch: {
+    recipeFilter(value) {
+      if (value) {
+        sessionStorage.setItem(recipeFilterStorageKey, value);
+      } else {
+        sessionStorage.removeItem(recipeFilterStorageKey);
+      }
+    },
   },
 
   computed: {

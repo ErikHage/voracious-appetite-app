@@ -2,6 +2,7 @@ import { createTestingPinia } from '@pinia/testing';
 import { mountWithPlugins } from '../../../helpers/mount';
 import RecipesPage from '@/components/views/RecipesPage.vue';
 import { useCommonStore } from '@/store';
+import { recipeFilterStorageKey } from '@/utils/constants';
 
 const recipes = [
     { recipeId: '2', recipeName: 'Lentil Soup', filterMatchString: 'Lentil Soup vegan' },
@@ -26,6 +27,10 @@ function recipeNames(wrapper) {
 }
 
 describe('RecipesPage', () => {
+    beforeEach(() => {
+        sessionStorage.clear();
+    });
+
     it('loads recipes on mount', () => {
         const { store } = mountPage();
 
@@ -81,6 +86,51 @@ describe('RecipesPage', () => {
         await wrapper.findAll('tbody tr button')[1].trigger('click');
 
         expect(router.push).toHaveBeenCalledWith('/recipes/1');
+    });
+
+    describe('saved search', () => {
+        it('starts with an empty search when nothing is saved', () => {
+            const { wrapper } = mountPage();
+
+            expect(wrapper.find('#filter-recipes').element.value).toBe('');
+            expect(wrapper.text()).toContain('Showing 3 of 3 recipes');
+        });
+
+        it('restores the search saved earlier in the session', () => {
+            sessionStorage.setItem(recipeFilterStorageKey, 'vegan');
+
+            const { wrapper } = mountPage();
+
+            expect(wrapper.find('#filter-recipes').element.value).toBe('vegan');
+            expect(wrapper.text()).toContain('Showing 2 of 3 recipes');
+        });
+
+        it('saves the search as the user types', async () => {
+            const { wrapper } = mountPage();
+
+            await wrapper.find('#filter-recipes').setValue('soup');
+
+            expect(sessionStorage.getItem(recipeFilterStorageKey)).toBe('soup');
+        });
+
+        it('forgets the search when the field is emptied', async () => {
+            const { wrapper } = mountPage();
+
+            await wrapper.find('#filter-recipes').setValue('soup');
+            await wrapper.find('#filter-recipes').setValue('');
+
+            expect(sessionStorage.getItem(recipeFilterStorageKey)).toBeNull();
+        });
+
+        it('forgets the search when the field is cleared', async () => {
+            sessionStorage.setItem(recipeFilterStorageKey, 'soup');
+            const { wrapper } = mountPage();
+
+            await wrapper.find('.v-field__clearable .v-icon').trigger('click');
+
+            expect(sessionStorage.getItem(recipeFilterStorageKey)).toBeNull();
+            expect(wrapper.text()).toContain('Showing 3 of 3 recipes');
+        });
     });
 
     it('shows the store alert', () => {
