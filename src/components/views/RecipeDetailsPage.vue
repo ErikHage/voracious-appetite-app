@@ -1,5 +1,18 @@
 <template>
   <v-container>
+    <v-row>
+      <v-col>
+        <v-btn
+            id="back-to-recipes"
+            variant="text"
+            color="primary"
+            prepend-icon="mdi-arrow-left"
+            :to="{ name: 'recipes-list' }"
+        >
+          Back to recipes
+        </v-btn>
+      </v-col>
+    </v-row>
     <div v-if="selectedRecipe">
       <v-row>
         <v-col>
