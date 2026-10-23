@@ -5,3 +5,6 @@ stop-voracious-appetite.sh
 
 # Installed fresh in the image by npm install
 node_modules
+
+# Local tools, not part of the app
+tools

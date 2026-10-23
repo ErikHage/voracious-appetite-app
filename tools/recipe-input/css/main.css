@@ -1,0 +1,12 @@
+.ingredient-row {
+    display:table-cell;
+    width:100%;
+}
+
+.tab-pane {
+    padding-top: 20px;
+}
+
+#outputTextBox {
+    width: 100%;
+}
