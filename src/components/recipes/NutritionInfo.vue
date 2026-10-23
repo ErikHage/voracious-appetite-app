@@ -5,6 +5,10 @@
       <v-table density="compact">
         <tbody >
         <tr>
+          <th>Serving Size</th>
+          <td>{{ servingSize }}</td>
+        </tr>
+        <tr>
           <th>Calories</th>
           <td>{{ calories }}</td>
         </tr>
@@ -42,6 +46,16 @@ export default {
   },
 
   computed: {
+    servingSize() {
+      const servingSize = this.nutrition.servingSize;
+
+      if (servingSize?.value == null) {
+        return '---';
+      }
+
+      return `${servingSize.value} ${servingSize.type ?? ''}`.trim();
+    },
+
     calories() {
       return this.nutrition.calories ?? '---';
     },

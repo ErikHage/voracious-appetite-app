@@ -68,6 +68,8 @@ $(document).ready(function() {
       .filter(keyword => keyword.length > 0)
       .map(keyword => keyword.trim());
 
+    const servingSizeType = $('#servingSizeType').val().trim();
+    const servingSizeValue = Number($('#servingSizeValue').val());
     const calories = Number($('#calories').val());
     const fats = Number($('#fats').val());
     const carbohydrates = Number($('#carbohydrates').val());
@@ -122,6 +124,10 @@ $(document).ready(function() {
       steps,
       keywords,
       nutrition: {
+        servingSize: {
+          type: servingSizeType,
+          value: servingSizeValue <= 0 ? null : servingSizeValue,
+        },
         calories: calories <= 0 ? null : calories,
         fats: fats <= 0 ? null : fats,
         carbohydrates: carbohydrates <= 0 ? null : carbohydrates,
@@ -152,6 +158,8 @@ $(document).ready(function() {
     $('#cookTimeValue').val(currentJson.cook.value);
     $('#yieldKind').val(currentJson.yield.kind);
     $('#yieldValue').val(currentJson.yield.value);
+    $('#servingSizeType').val(currentJson?.nutrition?.servingSize?.type);
+    $('#servingSizeValue').val(currentJson?.nutrition?.servingSize?.value);
     $('#calories').val(currentJson?.nutrition?.calories);
     $('#fats').val(currentJson?.nutrition?.fats);
     $('#carbohydrates').val(currentJson?.nutrition?.carbohydrates);
@@ -180,6 +188,8 @@ $(document).ready(function() {
     $('#cookTimeValue').val('');
     $('#yieldKind').val('');
     $('#yieldValue').val('');
+    $('#servingSizeType').val('');
+    $('#servingSizeValue').val('');
     $('#calories').val('');
     $('#fats').val('');
     $('#carbohydrates').val('');

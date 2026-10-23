@@ -6,7 +6,11 @@ import { parseDslArgs } from '@feral-auth/ts-simple-dsl';
  */
 export function createNutritionInfo(world, driver) {
     return {
-        /** Every nutrient is listed, in order, as a number or ---. No parameters. */
+        /**
+         * The serving size and every nutrient are listed, in order: the serving size
+         * as a number with an optional unit, the nutrients as numbers, any of them
+         * --- when unknown. No parameters.
+         */
         async checkShowsEveryNutrient(...args) {
             parseDslArgs(args, {});
 
