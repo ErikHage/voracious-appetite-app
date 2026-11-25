@@ -1,7 +1,9 @@
 import { createApp } from 'vue'
+// First: its styles declare the order of Vuetify's CSS layers. Loaded after
+// the components' styles, the reset would outrank them
+import vuetify from './plugins/vuetify'
 import App from './App.vue'
 
-import vuetify from './plugins/vuetify'
 import { pinia } from "@/plugins/pinia";
 import { loadFonts } from './plugins/webfontloader'
 

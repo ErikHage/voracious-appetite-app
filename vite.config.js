@@ -17,6 +17,16 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  // Vuetify 4's upgrade guide: pre-bundle the overlay stack, or the dev server
+  // can serve two copies of it and an overlay opens behind another. The app
+  // has none yet; FrAppShell's menus and command palette will
+  optimizeDeps: {
+    include: [
+      'vuetify/components/VOverlay',
+      'vuetify/components/VDialog',
+      'vuetify/components/VMenu',
+    ],
+  },
   server: {
     watch: {
       // Playwright writes these while the UI tests run against this dev
