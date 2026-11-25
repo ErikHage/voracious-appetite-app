@@ -10,6 +10,15 @@ test.describe('Recipe details page', () => {
         await recipeDetailsPage.checkShows('recipe: chosen');
     });
 
+    test('titles the window after the recipe', async ({ recipesPage, recipeDetailsPage }) => {
+        await recipesPage.open();
+        await recipesPage.chooseRecipe('recipe: chosen');
+
+        await recipesPage.openRecipe('recipe: chosen');
+
+        await recipeDetailsPage.checkTitlesWindowAfter('recipe: chosen');
+    });
+
     test('returns to the list from its back link', async ({ recipesPage, recipeDetailsPage }) => {
         await recipesPage.open();
         await recipesPage.chooseRecipe('recipe: chosen');

@@ -40,6 +40,12 @@ export async function expectAttribute(locator, name, value, what) {
         .toHaveAttribute(name, value);
 }
 
+/** `title` is a string to match exactly, or a RegExp. */
+export async function expectTitle(page, title, what) {
+    await expect(page, failureMessage(what, `the window to be titled ${title instanceof RegExp ? title : `"${title}"`}`))
+        .toHaveTitle(title);
+}
+
 export async function expectUrl(page, url, what) {
     await expect(page, failureMessage(what, `the browser to be at ${url}`)).toHaveURL(url);
 }

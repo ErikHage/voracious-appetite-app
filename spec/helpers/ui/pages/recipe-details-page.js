@@ -32,6 +32,13 @@ export function createRecipeDetailsPage(world, driver) {
             await driver.shows(world.recipeNamed(params.recipe));
         },
 
+        /** `recipe`: the window, and so the browser tab, is titled after it. */
+        async checkTitlesWindowAfter(...args) {
+            const params = parseDslArgs(args, { recipe: alias() });
+
+            await driver.titlesWindowAfter(world.recipeNamed(params.recipe));
+        },
+
         /** Opens the page for a recipe id the service doesn't have. No parameters. */
         async openUnknownRecipe(...args) {
             parseDslArgs(args, {});

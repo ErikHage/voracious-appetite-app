@@ -87,6 +87,34 @@ describe('App', () => {
         await vi.waitFor(() => expect(router.currentRoute.value.path).toBe('/recipes/beef-stew'));
     });
 
+    it("titles the window after the recipe on a recipe's page", async () => {
+        ({ wrapper } = await mountApp('/recipes/beef-stew', { recipes, selectedRecipe: { recipeId: 'beef-stew', recipeName: 'Beef Stew' } }));
+
+        expect(document.title).toBe('Beef Stew - Voracious Appetite');
+    });
+
+    it("titles the window after Recipes while a recipe's page loads", async () => {
+        ({ wrapper } = await mountApp('/recipes/beef-stew', { recipes, selectedRecipe: null }));
+
+        expect(document.title).toBe('Recipes - Voracious Appetite');
+    });
+
+    it('titles the window after Recipes when the recipe could not be loaded', async () => {
+        ({ wrapper } = await mountApp('/recipes/no-such', { recipes, selectedRecipe: null, selectedRecipeError: 'not-found' }));
+
+        expect(document.title).toBe('Recipes - Voracious Appetite');
+    });
+
+    it('titles the window after the page, not the last recipe, once off its page', async () => {
+        let router;
+        ({ wrapper, router } = await mountApp('/recipes/beef-stew', { recipes, selectedRecipe: { recipeId: 'beef-stew', recipeName: 'Beef Stew' } }));
+
+        await router.push('/recipes');
+        await flushPromises();
+
+        expect(document.title).toBe('Recipes - Voracious Appetite');
+    });
+
     it("shows the route's page in the shell's main area", async () => {
         ({ wrapper } = await mountApp());
 

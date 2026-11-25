@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
 
-import { expectText, expectThat, expectUrl, expectVisible } from './assertions';
+import { expectText, expectThat, expectTitle, expectUrl, expectVisible } from './assertions';
 import { openOn, urlOf } from './screens';
 import { recipesServiceUrl } from '../setup/config';
 
@@ -32,6 +32,11 @@ export function createRecipeDetailsPageDriver(page) {
 
             await expectUrl(page, detailsUrl, what);
             await expectText(heading, recipe.name, what);
+        },
+
+        /** The window is titled `<recipe> - <app>`, as a browser tab shows it. */
+        async titlesWindowAfter(recipe) {
+            await expectTitle(page, `${recipe.name} - Voracious Appetite`, `titling the window after recipe "${recipe.name}"`);
         },
 
         /**
