@@ -1,27 +1,12 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+// After vuetify/styles: the few rules the Fr* components can't get from
+// Vuetify's classes
+import '@feral-auth/vue-components/styles.css'
 
 import { createVuetify } from 'vuetify'
-// import { aliases, mdi } from 'vuetify/iconsets/mdi' // Optional: for custom icon config
-// import colors from 'vuetify/util/colors' // Optional: for custom themes
+import { createFeralVuetifyOptions } from '@feral-auth/vue-components'
 
-export default createVuetify({
-    theme: {
-        defaultTheme: 'dark',
-        // themes: {
-        //   dark: {
-        //     dark: true,
-        //     colors: {
-        //       primary: colors.blue.darken2,
-        //       secondary: colors.deepPurple.accent4,
-        //     },
-        //   },
-        // },
-    },
-    // icons: {
-    //   defaultSet: 'mdi',
-    //   aliases,
-    //   sets: { mdi },
-    // },
-})
-
+// The feral themes (feralDark is the default) and the mdi icon set, shared
+// with the other feral apps
+export default createVuetify(createFeralVuetifyOptions())
