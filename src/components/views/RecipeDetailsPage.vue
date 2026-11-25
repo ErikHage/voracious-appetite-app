@@ -1,15 +1,7 @@
 <template>
-  <!-- No title of its own: the recipe's name is the title, below the way back -->
+  <!-- No title of its own: the recipe's name is the title. The drawer's
+       Recipes link is the way back -->
   <fr-page>
-    <fr-btn
-        id="back-to-recipes"
-        class="mb-4"
-        variant="text"
-        prepend-icon="mdi-arrow-left"
-        :to="{ name: 'recipes-list' }"
-    >
-      Back to recipes
-    </fr-btn>
     <div v-if="selectedRecipe">
       <fr-page-title :title="selectedRecipe.recipeName"/>
       <h3 v-if="!!keywords" class="mb-6">{{ keywords }}</h3>
@@ -58,7 +50,6 @@
 import {mapActions, mapState} from "pinia";
 import {
   FrAlert,
-  FrBtn,
   FrCard,
   FrCol,
   FrPage,
@@ -77,7 +68,6 @@ export default {
 
   components: {
     FrAlert,
-    FrBtn,
     FrCard,
     FrCol,
     FrPage,

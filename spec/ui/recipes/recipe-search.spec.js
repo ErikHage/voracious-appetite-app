@@ -43,7 +43,7 @@ test.describe('Recipe search', () => {
         await recipesPage.search.searchForWordOf('recipe: chosen');
         await recipesPage.openRecipe('recipe: chosen');
 
-        await recipeDetailsPage.goBackToRecipes();
+        await recipeDetailsPage.nav.goToRecipes();
 
         await recipesPage.search.checkHoldsWordOf('recipe: chosen');
         await recipesPage.checkSearchFound('recipe: chosen');

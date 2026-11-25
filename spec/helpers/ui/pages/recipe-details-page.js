@@ -53,13 +53,6 @@ export function createRecipeDetailsPage(world, driver) {
             await driver.reportsRecipeNotFound();
         },
 
-        /** Follows the "Back to recipes" link. No parameters. */
-        async goBackToRecipes(...args) {
-            parseDslArgs(args, {});
-
-            await driver.goBackToRecipes();
-        },
-
         /** Reloads the page in the browser. No parameters. */
         async reload(...args) {
             parseDslArgs(args, {});

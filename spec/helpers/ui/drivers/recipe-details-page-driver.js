@@ -22,7 +22,6 @@ export function createRecipeDetailsPageDriver(page) {
     // The skeleton announces itself as an alert named "Loading..."
     const loading = main.getByRole('alert', { name: 'Loading...' });
     const notFound = main.getByRole('alert').filter({ hasText: 'Recipe not found' });
-    const backLink = main.getByRole('link', { name: 'Back to recipes' });
     // `recipes/<id>`, where the id is whatever the service gave the recipe
     const detailsUrl = new RegExp(`^${escapeForRegExp(urlOf('recipes/'))}[^/]+$`);
 
@@ -76,10 +75,6 @@ export function createRecipeDetailsPageDriver(page) {
             // the page has settled
             expectThat(await loading.count() === 0, 'no "Loading..." skeleton', 'it is still shown', what);
             expectThat(await heading.count() === 0, 'no recipe heading', 'a heading', what);
-        },
-
-        async goBackToRecipes() {
-            await backLink.click();
         },
 
         async reload() {

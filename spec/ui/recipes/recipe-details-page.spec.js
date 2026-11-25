@@ -19,23 +19,13 @@ test.describe('Recipe details page', () => {
         await recipeDetailsPage.checkTitlesWindowAfter('recipe: chosen');
     });
 
-    test('returns to the list from its back link', async ({ recipesPage, recipeDetailsPage }) => {
-        await recipesPage.open();
-        await recipesPage.chooseRecipe('recipe: chosen');
-        await recipesPage.openRecipe('recipe: chosen');
-
-        await recipeDetailsPage.goBackToRecipes();
-
-        await recipesPage.checkIsShown();
-    });
-
     test('says when a recipe does not exist', async ({ recipeDetailsPage, recipesPage }) => {
         await recipeDetailsPage.openUnknownRecipe();
 
         await recipeDetailsPage.checkReportsRecipeNotFound();
 
         // Still usable
-        await recipeDetailsPage.goBackToRecipes();
+        await recipeDetailsPage.nav.goToRecipes();
         await recipesPage.checkIsShown();
     });
 

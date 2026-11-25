@@ -72,12 +72,6 @@ describe('RecipeDetailsPage', () => {
         expect(wrapper.find('.v-skeleton-loader').exists()).toBe(false);
     });
 
-    it('shows the back link when the recipe could not be loaded', async () => {
-        const { wrapper } = await mountPage(null, { selectedRecipeError: 'not-found' });
-
-        expect(wrapper.find('#back-to-recipes').exists()).toBe(true);
-    });
-
     it('shows the recipe name, keywords and sections once loaded', async () => {
         const { wrapper } = await mountPage(recipe);
 
@@ -93,28 +87,5 @@ describe('RecipeDetailsPage', () => {
         const { wrapper } = await mountPage({ ...recipe, keywords });
 
         expect(wrapper.find('h3').exists()).toBe(false);
-    });
-
-    it('links back to the recipes list', async () => {
-        const { wrapper } = await mountPage(recipe);
-
-        const backLink = wrapper.find('#back-to-recipes');
-        expect(backLink.text()).toBe('Back to recipes');
-        expect(backLink.attributes('href')).toBe('/recipes');
-    });
-
-    it('shows the back link while the recipe is still loading', async () => {
-        const { wrapper } = await mountPage(null);
-
-        expect(wrapper.find('#back-to-recipes').exists()).toBe(true);
-    });
-
-    it('navigates to the recipes list when the back link is clicked', async () => {
-        const { wrapper, router } = await mountPage(recipe);
-
-        await wrapper.find('#back-to-recipes').trigger('click');
-        await flushPromises();
-
-        expect(router.currentRoute.value.name).toBe('recipes-list');
     });
 });
