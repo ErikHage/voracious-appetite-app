@@ -3,7 +3,11 @@ start-voracious-appetite.sh
 stop-voracious-appetite.sh
 .run
 
-# Installed fresh in the image by npm install
+# npm's token for the private @feral-auth packages, if a local .npmrc holds
+# it. The build gets it only as a secret, never as a copied file
+.npmrc
+
+# Installed fresh in the image by npm ci
 node_modules
 
 # Local tools, not part of the app

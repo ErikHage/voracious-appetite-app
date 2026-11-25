@@ -1,17 +1,28 @@
-FROM node:lts-alpine as build-stage
+# syntax=docker/dockerfile:1
+
+# @feral-auth/vue-components is a private npm package, so npm ci needs a token.
+# It comes in as a build secret, mounted only while npm ci runs, so it is in no
+# layer of the image:
+#
+#   docker build --secret id=npmrc,src=$HOME/.npmrc -t ehage/voracious-appetite-app .
+#
+# where that .npmrc holds `//registry.npmjs.org/:_authToken=<a read-only token>`.
+
+FROM node:lts-alpine AS build-stage
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+# Install exactly what package-lock.json names, as npm ci does locally
+RUN --mount=type=secret,id=npmrc,target=/app/.npmrc,required=true npm ci
 
 COPY . .
 
 RUN npm run build
 
 # production stage
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine AS production-stage
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html/apps/voracious-appetite
 
