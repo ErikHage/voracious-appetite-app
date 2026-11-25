@@ -1,33 +1,36 @@
 <template>
-  <v-card class="elevation-4 fill-height d-flex flex-column">
-    <v-card-title class="d-flex justify-start">Ingredients</v-card-title>
-    <v-card-text class="flex-grow-1 overflow-auto">
-      <v-table density="compact">
-        <tbody>
-        <tr v-for="(ingredient, index) in ingredients"
-            :key="ingredient.name + index">
-          <td class="quantity-col">
-            <span class="ingredient-quantity-value">{{ ingredient.quantity.value }}</span>
-            {{ toDisplayUnit(ingredient.quantity.kind) }}
-          </td>
-          <td class="name-col">
-            {{ ingredient.name }}
-            <span v-if="ingredient.notes" class="ingredient-notes">
-              {{ ingredient.notes }}
-            </span>
-          </td>
-        </tr>
-        </tbody>
-      </v-table>
-    </v-card-text>
-  </v-card>
+  <fr-card class="fill-height" title="Ingredients">
+    <fr-table>
+      <tbody>
+      <tr v-for="(ingredient, index) in ingredients"
+          :key="ingredient.name + index">
+        <td class="quantity-col">
+          <span class="ingredient-quantity-value">{{ ingredient.quantity.value }}</span>
+          {{ toDisplayUnit(ingredient.quantity.kind) }}
+        </td>
+        <td class="name-col">
+          {{ ingredient.name }}
+          <span v-if="ingredient.notes" class="ingredient-notes">
+            {{ ingredient.notes }}
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </fr-table>
+  </fr-card>
 </template>
 
 <script>
+import {FrCard, FrTable} from "@feral-auth/vue-components";
 import measurements from "@/utils/measurements";
 
 export default {
   name: "IngredientsList",
+
+  components: {
+    FrCard,
+    FrTable,
+  },
 
   props: {
     ingredients: {

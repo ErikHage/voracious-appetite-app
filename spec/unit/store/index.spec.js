@@ -25,39 +25,13 @@ describe('useCommonStore', () => {
         vi.restoreAllMocks();
     });
 
-    it('starts idle with no recipes and no alert', () => {
+    it('starts idle with no recipes and no load errors', () => {
         expect(store.$state).toEqual({
             status: 'idle',
             recipes: [],
             selectedRecipe: null,
             selectedRecipeError: null,
-            alertVisible: false,
-            alertType: 'success',
-            alertMessage: null,
-        });
-    });
-
-    describe('setAlertMessage', () => {
-        it('shows the alert, then hides it after 3 seconds', () => {
-            store.setAlertMessage(null, 'success', 'saved');
-
-            expect(store.alertVisible).toBe(true);
-            expect(store.alertType).toBe('success');
-            expect(store.alertMessage).toBe('saved');
-
-            vi.advanceTimersByTime(2999);
-            expect(store.alertVisible).toBe(true);
-
-            vi.advanceTimersByTime(1);
-            expect(store.alertVisible).toBe(false);
-        });
-
-        it('logs the error when one is given', () => {
-            const err = new Error('boom');
-
-            store.setAlertMessage(err, 'error', 'failed');
-
-            expect(console.error).toHaveBeenCalledWith(err);
+            recipesLoadError: null,
         });
     });
 
@@ -80,16 +54,28 @@ describe('useCommonStore', () => {
             expect(store.status).toBe('idle');
         });
 
-        it('shows an error alert and sets error status on failure', async () => {
-            recipesApi.getRecipes.mockRejectedValue(new Error('boom'));
+        it('records a load error, logs it and sets error status on failure', async () => {
+            const err = new Error('boom');
+            recipesApi.getRecipes.mockRejectedValue(err);
 
             await store.loadRecipes();
 
             expect(store.status).toBe('error');
             expect(store.recipes).toEqual([]);
-            expect(store.alertVisible).toBe(true);
-            expect(store.alertType).toBe('error');
-            expect(store.alertMessage).toBe('unable to load recipes');
+            expect(store.recipesLoadError).toBe('Unable to load recipes');
+            expect(console.error).toHaveBeenCalledWith(err);
+        });
+
+        it('keeps the load error until a later load succeeds', async () => {
+            recipesApi.getRecipes.mockRejectedValue(new Error('boom'));
+            await store.loadRecipes();
+            vi.advanceTimersByTime(10_000);
+            expect(store.recipesLoadError).toBe('Unable to load recipes');
+
+            recipesApi.getRecipes.mockResolvedValue([]);
+            await store.loadRecipes();
+
+            expect(store.recipesLoadError).toBeNull();
         });
     });
 
@@ -138,12 +124,12 @@ describe('useCommonStore', () => {
             expect(console.error).toHaveBeenCalledWith(err);
         });
 
-        it('leaves the shared alert alone, since the page shows the failure itself', async () => {
+        it("leaves the recipe list's load error alone", async () => {
             recipesApi.getRecipeById.mockRejectedValue(new Error('boom'));
 
             await store.loadSelectedRecipe('42');
 
-            expect(store.alertVisible).toBe(false);
+            expect(store.recipesLoadError).toBeNull();
         });
     });
 });

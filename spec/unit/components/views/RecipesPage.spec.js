@@ -176,13 +176,17 @@ describe('RecipesPage', () => {
         });
     });
 
-    it('shows the store alert', () => {
-        const { wrapper } = mountPage({
-            alertVisible: true,
-            alertType: 'error',
-            alertMessage: 'unable to load recipes',
-        });
+    it('shows the load error as an error alert', () => {
+        const { wrapper } = mountPage({ recipesLoadError: 'Unable to load recipes' });
 
-        expect(wrapper.find('.v-alert').text()).toContain('unable to load recipes');
+        const alert = wrapper.find('.v-alert');
+        expect(alert.text()).toContain('Unable to load recipes');
+        expect(alert.classes()).toContain('text-error');
+    });
+
+    it('shows no alert when the recipes loaded', () => {
+        const { wrapper } = mountPage();
+
+        expect(wrapper.find('.v-alert').exists()).toBe(false);
     });
 });

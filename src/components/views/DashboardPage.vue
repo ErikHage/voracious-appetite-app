@@ -1,40 +1,42 @@
 <template>
-  <v-container>
-    <v-row class="justify-center">
-      <v-col cols="12" lg="6">
+  <!-- The app's front page: centred, unlike the other pages -->
+  <fr-container>
+    <fr-row justify="center">
+      <fr-col cols="12" lg="6">
         <div class="text-center mb-4">
           <h1>Voracious Appetite</h1>
           <h3 class="ma-2">An Online Recipe Store</h3>
-          <v-img
+          <fr-image
               :src="getAssetPath('ai-cardinal.jpg')"
               alt="Logo"
-              contain
               max-width="500"
               class="mx-auto"
-          ></v-img>
+          />
         </div>
 
-        <v-card class="text-center">
-          <v-card-title>Let's Get Cooking!</v-card-title>
-          <v-card-text>
-            <v-btn @click="goToRecipesList">Recipes</v-btn>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        <fr-card class="text-center" title="Let's Get Cooking!">
+          <fr-btn @click="goToRecipesList">Recipes</fr-btn>
+        </fr-card>
+      </fr-col>
+    </fr-row>
+  </fr-container>
 </template>
 
 <script>
-
+import {FrBtn, FrCard, FrCol, FrContainer, FrImage, FrRow} from "@feral-auth/vue-components";
 import {getAssetPath} from "@/utils/assets";
 
 export default {
   name: 'DashboardPage',
 
-  data: () => ({}),
-
-  computed: {},
+  components: {
+    FrBtn,
+    FrCard,
+    FrCol,
+    FrContainer,
+    FrImage,
+    FrRow,
+  },
 
   methods: {
     getAssetPath,

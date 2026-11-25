@@ -1,78 +1,71 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-btn
-            id="back-to-recipes"
-            variant="text"
-            color="primary"
-            prepend-icon="mdi-arrow-left"
-            :to="{ name: 'recipes-list' }"
-        >
-          Back to recipes
-        </v-btn>
-      </v-col>
-    </v-row>
+  <!-- No title of its own: the recipe's name is the title, below the way back -->
+  <fr-page>
+    <fr-btn
+        id="back-to-recipes"
+        class="mb-4"
+        variant="text"
+        prepend-icon="mdi-arrow-left"
+        :to="{ name: 'recipes-list' }"
+    >
+      Back to recipes
+    </fr-btn>
     <div v-if="selectedRecipe">
-      <v-row>
-        <v-col>
-          <div class="text-center">
-            <h1>{{ selectedRecipe.recipeName }}</h1>
-            <h3 v-if="!!keywords">{{ keywords }}</h3>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-card>
-            <v-card-text class="pa-1 fill-height">
-              <v-row>
-                <v-col cols="12" md="4" class="h-100 d-flex flex-column">
-                  <TimeAndYield
-                      class="ma-1"
-                      :prep="selectedRecipe.prep"
-                      :cook="selectedRecipe.cook"
-                      :yield="selectedRecipe.yield"
-                  />
-                  <NutritionInfo
-                      class="ma-1 mt-auto"
-                    :nutrition="selectedRecipe.nutrition"/>
-                </v-col>
-                <v-col cols="12" md="8" class="d-flex flex-column">
-                  <IngredientsList
-                      class="ma-1 fill-height"
-                      :ingredients="selectedRecipe.ingredients"/>
-                </v-col>
-                <v-col cols="12">
-                  <PreparationStepsList
-                    :steps="selectedRecipe.steps"/>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+      <fr-page-title :title="selectedRecipe.recipeName"/>
+      <h3 v-if="!!keywords" class="mb-6">{{ keywords }}</h3>
+      <fr-card flush>
+        <div class="pa-1 fill-height">
+          <fr-row>
+            <fr-col cols="12" md="4" class="h-100 d-flex flex-column">
+              <TimeAndYield
+                  class="ma-1"
+                  :prep="selectedRecipe.prep"
+                  :cook="selectedRecipe.cook"
+                  :yield="selectedRecipe.yield"
+              />
+              <NutritionInfo
+                  class="ma-1 mt-auto"
+                  :nutrition="selectedRecipe.nutrition"/>
+            </fr-col>
+            <fr-col cols="12" md="8" class="d-flex flex-column">
+              <IngredientsList
+                  class="ma-1 fill-height"
+                  :ingredients="selectedRecipe.ingredients"/>
+            </fr-col>
+            <fr-col cols="12">
+              <PreparationStepsList
+                  :steps="selectedRecipe.steps"/>
+            </fr-col>
+          </fr-row>
+        </div>
+      </fr-card>
     </div>
-    <v-row v-else-if="selectedRecipeError">
-      <v-col>
-        <v-alert type="error" class="mx-auto" max-width="600">
-          {{ errorMessage }}
-        </v-alert>
-      </v-col>
-    </v-row>
-    <div v-else>
-      <v-skeleton-loader
-          type="heading, paragraph, paragraph"
-          elevation="2"
-          class="mx-auto"
-          max-width="600"
-      />
-    </div>
-  </v-container>
+    <!-- Stays until a load succeeds -->
+    <fr-alert v-else-if="selectedRecipeError" type="error" class="mx-auto" max-width="600">
+      {{ errorMessage }}
+    </fr-alert>
+    <fr-skeleton
+        v-else
+        type="heading, paragraph, paragraph"
+        elevation="2"
+        class="mx-auto"
+        max-width="600"
+    />
+  </fr-page>
 </template>
 
 <script>
 import {mapActions, mapState} from "pinia";
+import {
+  FrAlert,
+  FrBtn,
+  FrCard,
+  FrCol,
+  FrPage,
+  FrPageTitle,
+  FrRow,
+  FrSkeleton,
+} from "@feral-auth/vue-components";
 import {useCommonStore} from "@/store";
 import TimeAndYield from "@/components/recipes/TimeAndYield.vue";
 import IngredientsList from "@/components/recipes/IngredientsList.vue";
@@ -83,6 +76,14 @@ export default {
   name: 'RecipeDetailsPage',
 
   components: {
+    FrAlert,
+    FrBtn,
+    FrCard,
+    FrCol,
+    FrPage,
+    FrPageTitle,
+    FrRow,
+    FrSkeleton,
     PreparationStepsList,
     NutritionInfo,
     IngredientsList,

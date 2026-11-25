@@ -1,42 +1,46 @@
 <template>
-  <v-card class="elevation-4">
-    <v-card-title class="d-flex justify-start">Nutritional Information</v-card-title>
-    <v-card-text>
-      <v-table density="compact">
-        <tbody >
-        <tr>
-          <th>Serving Size</th>
-          <td>{{ servingSize }}</td>
-        </tr>
-        <tr>
-          <th>Calories</th>
-          <td>{{ calories }}</td>
-        </tr>
-        <tr>
-          <th>Fats (g)</th>
-          <td>{{ fats }}</td>
-        </tr>
-        <tr>
-          <th>Carbs (g)</th>
-          <td>{{ carbs }}</td>
-        </tr>
-        <tr>
-          <th>Sugars (g)</th>
-          <td>{{ sugars }}</td>
-        </tr>
-        <tr>
-          <th>Protein (g)</th>
-          <td>{{ protein }}</td>
-        </tr>
-        </tbody>
-      </v-table>
-    </v-card-text>
-  </v-card>
+  <fr-card title="Nutritional Information">
+    <fr-table>
+      <tbody >
+      <tr>
+        <th>Serving Size</th>
+        <td>{{ servingSize }}</td>
+      </tr>
+      <tr>
+        <th>Calories</th>
+        <td>{{ calories }}</td>
+      </tr>
+      <tr>
+        <th>Fats (g)</th>
+        <td>{{ fats }}</td>
+      </tr>
+      <tr>
+        <th>Carbs (g)</th>
+        <td>{{ carbs }}</td>
+      </tr>
+      <tr>
+        <th>Sugars (g)</th>
+        <td>{{ sugars }}</td>
+      </tr>
+      <tr>
+        <th>Protein (g)</th>
+        <td>{{ protein }}</td>
+      </tr>
+      </tbody>
+    </fr-table>
+  </fr-card>
 </template>
 
 <script>
+import {FrCard, FrTable} from "@feral-auth/vue-components";
+
 export default {
   name: "NutritionInfo",
+
+  components: {
+    FrCard,
+    FrTable,
+  },
 
   props: {
     nutrition: {

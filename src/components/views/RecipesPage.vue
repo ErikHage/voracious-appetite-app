@@ -1,66 +1,54 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <div class="text-center">
-          <h1>Recipes</h1>
-          <fade-out-alert :is-visible="alert.isVisible" :alert-type="alert.type" :message="alert.message"/>
-        </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-card>
-          <v-card-title>
-            <v-text-field
-                id="filter-recipes"
-                class="mb-4 mt-2"
-                v-model="recipeFilter"
-                placeholder="Search..."
-                clearable
-                dense
-                outlined
-                hide-details
-            />
-          </v-card-title>
-          <v-card-text>
-            <v-table
-                density="compact"
-                class="elevation-1 mb-4"
-                height="65vh">
-              <tbody>
-              <tr v-for="recipe in filteredRecipes" :key="recipe.recipeId">
-                <td>
-                  <v-btn
-                      variant="text"
-                      color="primary"
-                      @click="onRecipeClick(recipe.recipeId)"
-                  >
-                    {{ recipe.recipeName }}
-                  </v-btn>
-                </td>
-              </tr>
-              </tbody>
-            </v-table>
-            <span>Showing {{ filteredRecipes.length }} of {{ recipes.length }} recipes</span>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <fr-page title="Recipes">
+    <!-- Stays until a load succeeds: a fading message would leave an empty list
+         with nothing saying why -->
+    <fr-alert v-if="recipesLoadError" type="error" class="mb-4">{{ recipesLoadError }}</fr-alert>
+    <fr-card>
+      <fr-text-field
+          id="filter-recipes"
+          class="mb-4"
+          v-model="recipeFilter"
+          placeholder="Search..."
+          clearable
+          hide-details
+      />
+      <fr-table
+          class="mb-4"
+          height="65vh">
+        <tbody>
+        <tr v-for="recipe in filteredRecipes" :key="recipe.recipeId">
+          <td>
+            <fr-btn
+                variant="text"
+                @click="onRecipeClick(recipe.recipeId)"
+            >
+              {{ recipe.recipeName }}
+            </fr-btn>
+          </td>
+        </tr>
+        </tbody>
+      </fr-table>
+      <span>Showing {{ filteredRecipes.length }} of {{ recipes.length }} recipes</span>
+    </fr-card>
+  </fr-page>
 </template>
 
 <script>
 import {mapActions, mapState} from "pinia";
+import {FrAlert, FrBtn, FrCard, FrPage, FrTable, FrTextField} from "@feral-auth/vue-components";
 import {useCommonStore} from "@/store";
-import FadeOutAlert from "@/components/utils/FadeOutAlert.vue";
 import {recipeFilterStorageKey} from "@/utils/constants";
 
 export default {
   name: 'RecipesPage',
 
   components: {
-    FadeOutAlert,
+    FrAlert,
+    FrBtn,
+    FrCard,
+    FrPage,
+    FrTable,
+    FrTextField,
   },
 
   data() {
@@ -83,18 +71,8 @@ export default {
   computed: {
     ...mapState(useCommonStore, {
       recipes: 'recipes',
-      alertType: 'alertType',
-      alertMessage: 'alertMessage',
-      alertVisible: 'alertVisible',
+      recipesLoadError: 'recipesLoadError',
     }),
-
-    alert() {
-      return {
-        isVisible: this.alertVisible,
-        type: this.alertType,
-        message: this.alertMessage,
-      };
-    },
 
     filteredRecipes() {
       let filtered = [...this.recipes];
