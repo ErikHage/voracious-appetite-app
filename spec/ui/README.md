@@ -22,7 +22,7 @@ spec/ui/**/*.spec.js           what the app should do, in "name: value" strings
 helpers/ui/ui-test.js          the one import: Playwright's test, with a fixture per page object
    |
 helpers/ui/pages/*-page.js     a page and the actions on it; parses the strings and delegates
-helpers/ui/components/*.js     reusable parts of a page (search box, side drawer), exposed as page properties
+helpers/ui/components/*.js     reusable parts of a page (search box, side drawer, command palette), exposed as page properties
    |
 helpers/ui/drivers/*-driver.js locators and every assertion, as typed methods
    |

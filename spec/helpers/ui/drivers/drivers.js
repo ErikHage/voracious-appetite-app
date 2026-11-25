@@ -1,3 +1,4 @@
+import { createCommandPaletteDriver } from './command-palette-driver';
 import { createDashboardPageDriver } from './dashboard-page-driver';
 import { createIngredientsListDriver } from './ingredients-list-driver';
 import { createNavDriver } from './nav-driver';
@@ -11,6 +12,7 @@ import { createTimeAndYieldDriver } from './time-and-yield-driver';
 /** Builds each driver once per test, over Playwright's `page`. */
 export function createDrivers(page) {
     return {
+        commandPalette: createCommandPaletteDriver(page),
         dashboardPage: createDashboardPageDriver(page),
         ingredientsList: createIngredientsListDriver(page),
         nav: createNavDriver(page),

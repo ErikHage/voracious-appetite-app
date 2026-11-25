@@ -4,6 +4,7 @@ import { createRouter, createMemoryHistory } from 'vue-router';
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
+import { createTestingPinia } from '@pinia/testing';
 import { createFeralVuetifyOptions } from '@feral-auth/vue-components';
 import App from '@/App.vue';
 
@@ -18,15 +19,26 @@ function linkRouter() {
     });
 }
 
-// The app as main.js makes it: the feral themes, which FrAppShell switches between
-async function mountApp(path = '/') {
+const recipes = [
+    { recipeId: 'beef-stew', recipeName: 'Beef Stew', filterMatchString: 'beef.stew.winter' },
+    { recipeId: 'lentil-soup', recipeName: 'Lentil Soup', filterMatchString: 'lentil.soup' },
+];
+
+// The app as main.js makes it: the feral themes, which FrAppShell switches
+// between, and the store, holding `common`'s state
+async function mountApp(path = '/', common = { recipes }) {
     const router = linkRouter();
     await router.push(path);
     const vuetify = createVuetify(createFeralVuetifyOptions({ components, directives }));
-    const wrapper = mount(App, { global: { plugins: [router, vuetify] }, attachTo: document.body });
+    const pinia = createTestingPinia({ initialState: { common } });
+    const wrapper = mount(App, { global: { plugins: [router, vuetify, pinia] }, attachTo: document.body });
     await flushPromises();
     return { wrapper, router };
 }
+
+// The sources FrAppShell's command palette searches. The palette's own
+// dialog needs a real browser; the UI suite drives it
+const paletteSources = wrapper => wrapper.findComponent({ name: 'FrAppShell' }).props('searchSources');
 
 describe('App', () => {
     let wrapper;
@@ -59,6 +71,20 @@ describe('App', () => {
         await flushPromises();
         expect(wrapper.find('#nav-dashboard').attributes('aria-current')).toBe('page');
         expect(wrapper.find('#nav-recipes-list').attributes('aria-current')).toBeUndefined();
+    });
+
+    it('finds recipes in the command palette, and opens the one chosen', async () => {
+        let router;
+        ({ wrapper, router } = await mountApp());
+
+        const [source] = paletteSources(wrapper);
+        const found = await source.search('stew');
+        source.select(found[0]);
+
+        expect(source.section).toBe('RECIPES');
+        expect(found.map(result => result.title)).toEqual(['Beef Stew']);
+        // The navigation outlasts a flush of promises
+        await vi.waitFor(() => expect(router.currentRoute.value.path).toBe('/recipes/beef-stew'));
     });
 
     it("shows the route's page in the shell's main area", async () => {
