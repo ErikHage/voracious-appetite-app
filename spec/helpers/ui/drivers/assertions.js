@@ -34,6 +34,12 @@ export async function expectNotText(locator, text, what) {
 }
 
 /** `url` is a string to match exactly, or a RegExp. */
+/** `value` is a string to match exactly, or a RegExp. */
+export async function expectAttribute(locator, name, value, what) {
+    await expect(locator, failureMessage(what, `${locator} to have ${name}="${value}"`))
+        .toHaveAttribute(name, value);
+}
+
 export async function expectUrl(page, url, what) {
     await expect(page, failureMessage(what, `the browser to be at ${url}`)).toHaveURL(url);
 }

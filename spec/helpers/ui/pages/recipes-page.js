@@ -1,7 +1,7 @@
 import { optional, parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
 import { alias, screen } from '../params';
-import { createAppBar } from '../components/app-bar';
+import { createNav } from '../components/nav';
 import { createRecipeSearch } from '../components/recipe-search';
 
 /**
@@ -14,7 +14,7 @@ import { createRecipeSearch } from '../components/recipe-search';
  */
 export function createRecipesPage(world, driver) {
     return {
-        appBar: createAppBar(world, world.drivers.appBar),
+        nav: createNav(world, world.drivers.nav),
 
         /** The search box above the list. */
         search: createRecipeSearch(world, world.drivers.recipeSearch),

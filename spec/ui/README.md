@@ -22,7 +22,7 @@ spec/ui/**/*.spec.js           what the app should do, in "name: value" strings
 helpers/ui/ui-test.js          the one import: Playwright's test, with a fixture per page object
    |
 helpers/ui/pages/*-page.js     a page and the actions on it; parses the strings and delegates
-helpers/ui/components/*.js     reusable parts of a page (search box, app bar), exposed as page properties
+helpers/ui/components/*.js     reusable parts of a page (search box, side drawer), exposed as page properties
    |
 helpers/ui/drivers/*-driver.js locators and every assertion, as typed methods
    |
@@ -33,7 +33,7 @@ helpers/ui/drivers/assertions.js  the only importer of expect
 
 **Names, not data.** The data is live, so a spec can't name a real recipe. Instead it chooses one from the list and gives it an alias: `recipesPage.chooseRecipe('recipe: chosen')`. Later steps refer to `recipe: chosen`, and the world resolves the alias to what the driver found.
 
-**Navigation is checked at the destination.** A step that clicks (`appBar.goToRecipes()`) asserts nothing; the next step checks where it led (`recipesPage.checkIsShown()`), by URL and heading. A page's `open` takes an optional `screen: desktop | phone`. A page with no URL a spec could know, like a recipe's page, has no `open`; it's reached from another page (`recipesPage.openRecipe('recipe: chosen')`).
+**Navigation is checked at the destination.** A step that clicks (`nav.goToRecipes()`) asserts nothing; the next step checks where it led (`recipesPage.checkIsShown()`), by URL and heading. A page's `open` takes an optional `screen: desktop | phone`. A page with no URL a spec could know, like a recipe's page, has no `open`; it's reached from another page (`recipesPage.openRecipe('recipe: chosen')`).
 
 **Known-wrong behaviour is pinned, not skipped.** A `// DocumentsCurrentBehavior:` comment above the test says what happens today and what should happen. The test title and the step name the intent (e.g. `checkReportsRecipeNotFound`). The driver method names today's behaviour (it was `keepsShowingLoading`), so it's the one thing a fix renames. Both bugs pinned so far have since been fixed, so no test is pinned at the moment.
 

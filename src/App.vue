@@ -1,21 +1,33 @@
 <template>
-  <v-app>
-    <AppBar/>
-    <v-main>
-      <router-view/>
-    </v-main>
-  </v-app>
+  <!-- FrAppShell on every page: the side drawer, and the toolbar with the
+       command palette and the theme menu. There's no login, so no user menu -->
+  <fr-app-shell
+      title="Voracious Appetite"
+      storage-prefix="voracious-appetite"
+      :sections="sections"
+      :active-view="activeView"
+  >
+    <router-view/>
+  </fr-app-shell>
 </template>
 
 <script>
-
-import AppBar from "@/components/layout/AppBar.vue";
+import { FrAppShell } from "@feral-auth/vue-components";
+import { activeViewFor, sections } from "@/utils/navigation";
 
 export default {
   name: 'App',
 
-  components: {
-    AppBar,
+  components: { FrAppShell },
+
+  data: () => ({
+    sections,
+  }),
+
+  computed: {
+    activeView() {
+      return activeViewFor(this.$route.path);
+    },
   },
 }
 </script>

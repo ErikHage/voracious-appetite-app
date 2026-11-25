@@ -1,12 +1,12 @@
 import { parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
 import { screen } from '../params';
-import { createAppBar } from '../components/app-bar';
+import { createNav } from '../components/nav';
 
 /** The dashboard, the app's landing page, in words. */
 export function createDashboardPage(world, driver) {
     return {
-        appBar: createAppBar(world, world.drivers.appBar),
+        nav: createNav(world, world.drivers.nav),
 
         /** Opens the page, on optional `screen: desktop | phone` (default desktop). */
         async open(...args) {

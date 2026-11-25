@@ -34,6 +34,7 @@ test.describe('Recipe details page', () => {
         await recipesPage.open();
         await recipesPage.chooseRecipe('recipe: chosen');
         await recipesPage.openRecipe('recipe: chosen');
+        await recipeDetailsPage.checkShows('recipe: chosen');
 
         await recipeDetailsPage.reload();
 

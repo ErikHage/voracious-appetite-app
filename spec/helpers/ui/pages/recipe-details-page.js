@@ -1,7 +1,7 @@
 import { parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
 import { alias } from '../params';
-import { createAppBar } from '../components/app-bar';
+import { createNav } from '../components/nav';
 import { createIngredientsList } from '../components/ingredients-list';
 import { createNutritionInfo } from '../components/nutrition-info';
 import { createPreparationSteps } from '../components/preparation-steps';
@@ -17,7 +17,7 @@ export function createRecipeDetailsPage(world, driver) {
     const { drivers } = world;
 
     return {
-        appBar: createAppBar(world, drivers.appBar),
+        nav: createNav(world, drivers.nav),
         timeAndYield: createTimeAndYield(world, drivers.timeAndYield),
         nutrition: createNutritionInfo(world, drivers.nutritionInfo),
         ingredients: createIngredientsList(world, drivers.ingredientsList),
