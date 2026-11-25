@@ -14,21 +14,31 @@
       :search-sources="searchSources"
       :view-title="viewTitle"
   >
+    <!-- The page's place, as the component playground shows it: Recipes,
+         then the recipe on its page; the last crumb alone on a small screen -->
+    <template #toolbar-start>
+      <fr-breadcrumbs
+          :items="crumbs"
+          density="compact"
+          class="pa-0 text-no-wrap overflow-hidden"
+          style="min-width: 0"
+      />
+    </template>
     <router-view/>
   </fr-app-shell>
 </template>
 
 <script>
 import { mapState } from "pinia";
-import { FrAppShell } from "@feral-auth/vue-components";
+import { FrAppShell, FrBreadcrumbs } from "@feral-auth/vue-components";
 import { useCommonStore } from "@/store";
-import { activeViewFor, sections } from "@/utils/navigation";
+import { activeViewFor, crumbsFor, sections } from "@/utils/navigation";
 import { recipeSearchSource } from "@/utils/recipe-search-source";
 
 export default {
   name: 'App',
 
-  components: { FrAppShell },
+  components: { FrAppShell, FrBreadcrumbs },
 
   data() {
     return {
@@ -42,6 +52,12 @@ export default {
 
     activeView() {
       return activeViewFor(this.$route.path);
+    },
+
+    // Below the shell's small-screen breakpoint, the toolbar has room for
+    // the last crumb alone
+    crumbs() {
+      return crumbsFor(this.$route.path, this.selectedRecipe, this.$vuetify.display.smAndDown);
     },
 
     // The recipe's name once its page has loaded it. Until then, or when it

@@ -2,6 +2,7 @@ import { parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
 import { alias } from '../params';
 import { createCommandPalette } from '../components/command-palette';
+import { createBreadcrumbs } from '../components/breadcrumbs';
 import { createNav } from '../components/nav';
 import { createIngredientsList } from '../components/ingredients-list';
 import { createNutritionInfo } from '../components/nutrition-info';
@@ -19,6 +20,7 @@ export function createRecipeDetailsPage(world, driver) {
 
     return {
         nav: createNav(world, drivers.nav),
+        breadcrumbs: createBreadcrumbs(world, drivers.breadcrumbs),
         palette: createCommandPalette(world, drivers.commandPalette),
         timeAndYield: createTimeAndYield(world, drivers.timeAndYield),
         nutrition: createNutritionInfo(world, drivers.nutritionInfo),

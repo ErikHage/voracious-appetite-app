@@ -1,4 +1,5 @@
 import { createCommandPaletteDriver } from './command-palette-driver';
+import { createBreadcrumbsDriver } from './breadcrumbs-driver';
 import { createDashboardPageDriver } from './dashboard-page-driver';
 import { createIngredientsListDriver } from './ingredients-list-driver';
 import { createNavDriver } from './nav-driver';
@@ -13,6 +14,7 @@ import { createTimeAndYieldDriver } from './time-and-yield-driver';
 export function createDrivers(page) {
     return {
         commandPalette: createCommandPaletteDriver(page),
+        breadcrumbs: createBreadcrumbsDriver(page),
         dashboardPage: createDashboardPageDriver(page),
         ingredientsList: createIngredientsListDriver(page),
         nav: createNavDriver(page),

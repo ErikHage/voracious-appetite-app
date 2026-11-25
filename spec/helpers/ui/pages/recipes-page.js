@@ -2,6 +2,7 @@ import { optional, parseDslArgs } from '@feral-auth/ts-simple-dsl';
 
 import { alias, screen } from '../params';
 import { createCommandPalette } from '../components/command-palette';
+import { createBreadcrumbs } from '../components/breadcrumbs';
 import { createNav } from '../components/nav';
 import { createRecipeSearch } from '../components/recipe-search';
 
@@ -16,6 +17,7 @@ import { createRecipeSearch } from '../components/recipe-search';
 export function createRecipesPage(world, driver) {
     return {
         nav: createNav(world, world.drivers.nav),
+        breadcrumbs: createBreadcrumbs(world, world.drivers.breadcrumbs),
         palette: createCommandPalette(world, world.drivers.commandPalette),
 
         /** The search box above the list. */

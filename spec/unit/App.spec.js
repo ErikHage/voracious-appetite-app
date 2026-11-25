@@ -124,6 +124,14 @@ describe('App', () => {
         expect(document.title).toBe('Recipes - Voracious Appetite');
     });
 
+    it("shows the page's breadcrumbs in the toolbar: Recipes, linked, then the recipe", async () => {
+        ({ wrapper } = await mountApp('/recipes/beef-stew', { recipes, selectedRecipe: { recipeId: 'beef-stew', recipeName: 'Beef Stew' } }));
+        const crumbs = wrapper.find('.v-app-bar .fr-breadcrumbs');
+
+        expect(crumbs.findAll('.v-breadcrumbs-item').map(item => item.text())).toEqual(['Recipes', 'Beef Stew']);
+        expect(crumbs.find('a.v-breadcrumbs-item--link').attributes('href')).toBe('/recipes');
+    });
+
     it("shows the route's page in the shell's main area", async () => {
         ({ wrapper } = await mountApp());
 
