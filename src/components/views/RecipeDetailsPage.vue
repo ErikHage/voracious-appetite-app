@@ -116,6 +116,17 @@ export default {
     ]),
   },
 
+  watch: {
+    // The router keeps this page when only the recipe changes (a pick in the
+    // command palette), so mounting alone would leave the last recipe shown.
+    // Leaving the page drops the id before it unmounts: nothing to load then
+    '$route.params.recipeId'(recipeId) {
+      if (recipeId) {
+        this.loadSelectedRecipe(recipeId);
+      }
+    },
+  },
+
   async mounted() {
     await this.loadSelectedRecipe(this.$route.params.recipeId);
   }

@@ -42,6 +42,15 @@ describe('RecipeDetailsPage', () => {
         expect(store.loadSelectedRecipe).toHaveBeenCalledWith('42');
     });
 
+    it('loads the next recipe when the route moves to another one', async () => {
+        const { store, router } = await mountPage(recipe);
+
+        await router.push('/recipes/43');
+        await flushPromises();
+
+        expect(store.loadSelectedRecipe).toHaveBeenLastCalledWith('43');
+    });
+
     it('shows a skeleton loader until the recipe is loaded', async () => {
         const { wrapper } = await mountPage(null);
 
