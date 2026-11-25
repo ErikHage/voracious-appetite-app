@@ -1,9 +1,13 @@
 <template>
   <!-- FrAppShell on every page: the side drawer, and the toolbar with the
        command palette and the theme menu. There's no login, so no user menu.
-       The palette finds recipes too, and a recipe's page titles the window -->
+       The palette finds recipes too, and a recipe's page titles the window.
+       The drawer reads "Feral" over the app's name, which doesn't fit on the
+       title's one line. The window keeps index.html's title, which FrAppShell
+       prefers to this one -->
   <fr-app-shell
-      title="Voracious Appetite"
+      title="Feral"
+      subtitle="Voracious Appetite"
       storage-prefix="voracious-appetite"
       :sections="sections"
       :active-view="activeView"

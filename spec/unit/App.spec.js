@@ -55,9 +55,18 @@ describe('App', () => {
         ({ wrapper } = await mountApp());
         const shell = wrapper.findComponent({ name: 'FrAppShell' });
 
-        expect(shell.props()).toMatchObject({ title: 'Voracious Appetite', storagePrefix: 'voracious-appetite' });
+        expect(shell.props()).toMatchObject({
+            title: 'Feral', subtitle: 'Voracious Appetite', storagePrefix: 'voracious-appetite',
+        });
         const links = wrapper.findAll('nav#app-nav .v-list-item').map(link => link.attributes('aria-label'));
         expect(links).toEqual(['Home', 'Recipes']);
+    });
+
+    it("names the drawer Feral, over the app's name", async () => {
+        ({ wrapper } = await mountApp());
+
+        expect(wrapper.find('nav#app-nav .fr-app-navigation-drawer__title').text()).toBe('Feral');
+        expect(wrapper.find('nav#app-nav .fr-app-navigation-drawer__subtitle').text()).toBe('Voracious Appetite');
     });
 
     it("marks the page's link, or the link it's under", async () => {
